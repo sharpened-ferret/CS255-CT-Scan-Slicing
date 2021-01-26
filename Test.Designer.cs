@@ -45,6 +45,8 @@ namespace CWIdeaTest
             this.topViewLabel = new System.Windows.Forms.Label();
             this.frontViewLabel = new System.Windows.Forms.Label();
             this.sideViewLabel = new System.Windows.Forms.Label();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).BeginInit();
@@ -86,11 +88,12 @@ namespace CWIdeaTest
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(48, 48);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(19, 6, 0, 6);
-            this.menuStrip1.Size = new System.Drawing.Size(3572, 64);
+            this.menuStrip1.Size = new System.Drawing.Size(3572, 72);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,13 +102,13 @@ namespace CWIdeaTest
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(103, 52);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(103, 57);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(305, 66);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(538, 66);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -202,6 +205,23 @@ namespace CWIdeaTest
             this.sideViewLabel.TabIndex = 13;
             this.sideViewLabel.Text = "Current Slice: {}";
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.vToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(124, 60);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // vToolStripMenuItem
+            // 
+            this.vToolStripMenuItem.Checked = true;
+            this.vToolStripMenuItem.CheckOnClick = true;
+            this.vToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.vToolStripMenuItem.Name = "vToolStripMenuItem";
+            this.vToolStripMenuItem.Size = new System.Drawing.Size(538, 66);
+            this.vToolStripMenuItem.Text = "Volume Rendering";
+            // 
             // Test
             // 
             this.AllowDrop = true;
@@ -254,6 +274,8 @@ namespace CWIdeaTest
         private System.Windows.Forms.Label topViewLabel;
         private System.Windows.Forms.Label frontViewLabel;
         private System.Windows.Forms.Label sideViewLabel;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vToolStripMenuItem;
     }
 }
 

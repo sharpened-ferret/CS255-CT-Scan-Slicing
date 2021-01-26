@@ -164,8 +164,8 @@ namespace CWIdeaTest
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
-                    col = (int)(((float)(datum - min) / ((float)(max - min)))*255);
-                    returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
@@ -185,9 +185,10 @@ namespace CWIdeaTest
             {
                 for (int i = 0; i < w; i++)
                 {
-                    datum = cthead[j, sliceNumber, i]; 
-                    col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
-                    returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
+                    datum = cthead[j, sliceNumber, i];
+                    //col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
@@ -208,12 +209,44 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, i, sliceNumber];
-                    col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
-                    returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
             return returnScanSlice;
+        }
+
+        private static Color getColour(double datum, bool volumeRender, int min, int max)
+        {
+            if (volumeRender)
+            {
+                if (datum < -300)
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+                if (datum >= -300 && datum < 50)
+                {
+                    return Color.FromArgb((int)(0.12 * 255), 255, (int)0.79 * 255, (int)0.6 * 255);
+                }
+                if (datum < 300 && datum >= 50)
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+                if (datum >= 300 && datum <= 4096)
+                {
+                    return Color.FromArgb((int)0.8 * 255, 255, 255, 255);
+                }
+                else
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+            }
+            else
+            {
+                int col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
+                return Color.FromArgb(255, col, col, col);
+            }
         }
     }
 }
