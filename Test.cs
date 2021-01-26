@@ -95,8 +95,6 @@ namespace CWIdeaTest
             int b1, b2;
 
             cthead = new short[CT_z_axis, CT_y_axis, CT_x_axis];
-            Int32 count = 0;
-            Int32 outerCount = 0;
 
             FileInfo fi = new FileInfo("CThead");
 
@@ -155,12 +153,8 @@ namespace CWIdeaTest
                     //If you don't do this, your j,i could be outside the array bounds
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
-                    datum = cthead[sliceNumber, j, i]; //get values from slice 76 (change this in your assignment)
-                                                       //calculate the colour by performing a mapping from [min,max] -> 0 to 1 (float)
-                                                       //Java setColor uses float values from 0 to 1 rather than 0-255 bytes for colour
-                    //Console.WriteLine(datum);
+                    datum = cthead[sliceNumber, j, i];
                     col = (int)(((float)(datum - min) / ((float)(max - min)))*255);
-                    //Console.WriteLine(col);
                     returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
                 }
             }
@@ -181,18 +175,8 @@ namespace CWIdeaTest
             {
                 for (int i = 0; i < w; i++)
                 {
-                    //at this point (i,j) is a single pixel in the image
-                    //here you would need to do something to (i,j) if the image size
-                    //does not match the slice size (e.g. during an image resizing operation
-                    //If you don't do this, your j,i could be outside the array bounds
-                    //In the framework, the image is 256x256 and the data set slices are 256x256
-                    //so I don't do anything - this also leaves you something to do for the assignment
-                    datum = cthead[j, sliceNumber, i]; //get values from slice 76 (change this in your assignment)
-                                                       //calculate the colour by performing a mapping from [min,max] -> 0 to 1 (float)
-                                                       //Java setColor uses float values from 0 to 1 rather than 0-255 bytes for colour
-                                                       //Console.WriteLine(datum);
+                    datum = cthead[j, sliceNumber, i]; 
                     col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
-                    //Console.WriteLine(col);
                     returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
                 }
             }
