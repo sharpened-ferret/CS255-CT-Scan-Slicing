@@ -184,7 +184,6 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, sliceNumber, i];
-                    //col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
                     Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
@@ -212,6 +211,24 @@ namespace CWIdeaTest
             }
 
             return returnScanSlice;
+        }
+
+        private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (darkModeToolStripMenuItem.Checked)
+            {
+                panel1.BackColor = Color.FromArgb(255, 30, 30, 30);
+                topViewLabel.ForeColor = Color.White;
+                frontViewLabel.ForeColor = Color.White;
+                sideViewLabel.ForeColor = Color.White;
+            }
+            else
+            {
+                panel1.BackColor = Test.DefaultBackColor;
+                topViewLabel.ForeColor = Color.Black;
+                frontViewLabel.ForeColor = Color.Black;
+                sideViewLabel.ForeColor = Color.Black;
+            }
         }
 
         private static Color getColour(double datum, bool volumeRender, int min, int max)
