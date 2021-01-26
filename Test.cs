@@ -33,8 +33,10 @@ namespace CWIdeaTest
             int Front_width = CT_x_axis;
             int Front_height = CT_z_axis;
 
-            topImage = new Bitmap(Top_width, Top_height);
             //pictureBox1.Image = topImage;
+            topImage = (Bitmap)pictureBox1.Image;
+
+            trackBar1.Maximum = CT_z_axis - 1;
 
         }
 
@@ -46,14 +48,12 @@ namespace CWIdeaTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            topImage = TopDownSlice(topImage, 32);
-            //PictureBox topBox = new PictureBox();
+            short sliceValue = (short)trackBar1.Value;
+            topImage = TopDownSlice(sliceValue);
             pictureBox1.Image = topImage;
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            //topBox.Visible = true;
 
-            Console.WriteLine("Test");
-            Console.WriteLine(topImage.GetPixel(100,100).ToString());
+            Console.WriteLine("TestPixel Colour" + topImage.GetPixel(CT_x_axis/2,CT_y_axis/2).ToString());
         }
 
         public void ReadData()
@@ -117,10 +117,10 @@ namespace CWIdeaTest
             Console.WriteLine(min + " " + max);
         }
 
-        public Bitmap TopDownSlice(Bitmap topImage, short sliceNumber)
+        public Bitmap TopDownSlice(short sliceNumber)
         {
-            int w = topImage.Width;
-            int h = topImage.Height;
+            int w = CT_x_axis;
+            int h = CT_y_axis;
 
             int col;
             double datum;

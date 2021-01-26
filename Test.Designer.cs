@@ -59,21 +59,21 @@ namespace CWIdeaTest
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(117, 261);
+            this.trackBar1.Location = new System.Drawing.Point(83, 346);
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(104, 45);
             this.trackBar1.TabIndex = 0;
             // 
             // trackBar2
             // 
-            this.trackBar2.Location = new System.Drawing.Point(279, 261);
+            this.trackBar2.Location = new System.Drawing.Point(535, 305);
             this.trackBar2.Name = "trackBar2";
             this.trackBar2.Size = new System.Drawing.Size(104, 45);
             this.trackBar2.TabIndex = 1;
             // 
             // trackBar3
             // 
-            this.trackBar3.Location = new System.Drawing.Point(451, 261);
+            this.trackBar3.Location = new System.Drawing.Point(707, 305);
             this.trackBar3.Name = "trackBar3";
             this.trackBar3.Size = new System.Drawing.Size(104, 45);
             this.trackBar3.TabIndex = 2;
@@ -105,7 +105,7 @@ namespace CWIdeaTest
             // 
             // sliceTop
             // 
-            this.sliceTop.Location = new System.Drawing.Point(128, 312);
+            this.sliceTop.Location = new System.Drawing.Point(96, 423);
             this.sliceTop.Name = "sliceTop";
             this.sliceTop.Size = new System.Drawing.Size(75, 23);
             this.sliceTop.TabIndex = 4;
@@ -116,16 +116,16 @@ namespace CWIdeaTest
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(55, 72);
+            this.pictureBox1.Location = new System.Drawing.Point(29, 55);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(182, 161);
+            this.pictureBox1.Size = new System.Drawing.Size(290, 272);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(253, 72);
+            this.pictureBox2.Location = new System.Drawing.Point(509, 116);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(182, 161);
             this.pictureBox2.TabIndex = 6;
@@ -134,7 +134,7 @@ namespace CWIdeaTest
             // pictureBox3
             // 
             this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(451, 72);
+            this.pictureBox3.Location = new System.Drawing.Point(707, 116);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(182, 161);
             this.pictureBox3.TabIndex = 7;
