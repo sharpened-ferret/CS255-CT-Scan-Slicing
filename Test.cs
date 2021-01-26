@@ -20,6 +20,8 @@ namespace CWIdeaTest
         int CT_z_axis = 113;
 
         Bitmap topImage;
+        Bitmap frontImage;
+        Bitmap sideImage;
 
 
         public Test()
@@ -33,11 +35,8 @@ namespace CWIdeaTest
             int Front_width = CT_x_axis;
             int Front_height = CT_z_axis;
 
-            //pictureBox1.Image = topImage;
-            topImage = (Bitmap)topView.Image;
-
             topSliceTrackbar.Maximum = CT_z_axis - 1;
-
+            frontSliceTrackbar.Maximum = CT_y_axis - 1;
         }
 
 
@@ -54,6 +53,16 @@ namespace CWIdeaTest
             topView.SizeMode = PictureBoxSizeMode.Zoom;
 
             Console.WriteLine("Test Pixel " + topImage.GetPixel(CT_x_axis/2,CT_y_axis/2).ToString());
+        }
+
+        private void frontSliceButton_Click(object sender, EventArgs e)
+        {
+            short sliceValue = (short)frontSliceTrackbar.Value;
+            frontImage = FrontInSlice(sliceValue);
+            frontView.Image = frontImage;
+            frontView.SizeMode = PictureBoxSizeMode.Zoom;
+
+            Console.WriteLine("Test Pixel " + frontImage.GetPixel(CT_x_axis / 2, CT_z_axis / 2).ToString());
         }
 
         public void ReadData()
@@ -110,7 +119,6 @@ namespace CWIdeaTest
             Console.WriteLine(min + " " + max);
         }
 
-
         public Bitmap TopDownSlice(short sliceNumber)
         {
             int w = CT_x_axis;
@@ -135,6 +143,38 @@ namespace CWIdeaTest
                                                        //Java setColor uses float values from 0 to 1 rather than 0-255 bytes for colour
                     //Console.WriteLine(datum);
                     col = (int)(((float)(datum - min) / ((float)(max - min)))*255);
+                    //Console.WriteLine(col);
+                    returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
+                }
+            }
+
+            return returnScanSlice;
+        }
+
+        public Bitmap FrontInSlice(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_z_axis;
+
+            int col;
+            double datum;
+            Bitmap returnScanSlice = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    //at this point (i,j) is a single pixel in the image
+                    //here you would need to do something to (i,j) if the image size
+                    //does not match the slice size (e.g. during an image resizing operation
+                    //If you don't do this, your j,i could be outside the array bounds
+                    //In the framework, the image is 256x256 and the data set slices are 256x256
+                    //so I don't do anything - this also leaves you something to do for the assignment
+                    datum = cthead[j, sliceNumber, i]; //get values from slice 76 (change this in your assignment)
+                                                       //calculate the colour by performing a mapping from [min,max] -> 0 to 1 (float)
+                                                       //Java setColor uses float values from 0 to 1 rather than 0-255 bytes for colour
+                                                       //Console.WriteLine(datum);
+                    col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
                     //Console.WriteLine(col);
                     returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
                 }
