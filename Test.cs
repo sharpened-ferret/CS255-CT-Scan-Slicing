@@ -149,7 +149,6 @@ namespace CWIdeaTest
             int w = CT_x_axis;
             int h = CT_y_axis;
 
-            int col;
             double datum;
             Bitmap returnScanSlice = new Bitmap(w, h);
 
@@ -177,7 +176,6 @@ namespace CWIdeaTest
             int w = CT_x_axis;
             int h = CT_z_axis;
 
-            int col;
             double datum;
             Bitmap returnScanSlice = new Bitmap(w, h);
 
@@ -200,7 +198,6 @@ namespace CWIdeaTest
             int w = CT_y_axis;
             int h = CT_z_axis;
 
-            int col;
             double datum;
             Bitmap returnScanSlice = new Bitmap(w, h);
 
