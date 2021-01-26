@@ -33,22 +33,22 @@ namespace CWIdeaTest
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Test));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.topSliceTrackbar = new System.Windows.Forms.TrackBar();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.trackBar3 = new System.Windows.Forms.TrackBar();
+            this.frontSliceTrackbar = new System.Windows.Forms.TrackBar();
+            this.sideSliceTrackbar = new System.Windows.Forms.TrackBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topSliceButton = new System.Windows.Forms.Button();
             this.topView = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.frontView = new System.Windows.Forms.PictureBox();
+            this.sideView = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.topView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frontView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sideView)).BeginInit();
             this.SuspendLayout();
             // 
             // imageList1
@@ -65,21 +65,21 @@ namespace CWIdeaTest
             this.topSliceTrackbar.Size = new System.Drawing.Size(329, 136);
             this.topSliceTrackbar.TabIndex = 0;
             // 
-            // trackBar2
+            // frontSliceTrackbar
             // 
-            this.trackBar2.Location = new System.Drawing.Point(1694, 868);
-            this.trackBar2.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(329, 136);
-            this.trackBar2.TabIndex = 1;
+            this.frontSliceTrackbar.Location = new System.Drawing.Point(1694, 868);
+            this.frontSliceTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.frontSliceTrackbar.Name = "frontSliceTrackbar";
+            this.frontSliceTrackbar.Size = new System.Drawing.Size(329, 136);
+            this.frontSliceTrackbar.TabIndex = 1;
             // 
-            // trackBar3
+            // sideSliceTrackbar
             // 
-            this.trackBar3.Location = new System.Drawing.Point(2239, 868);
-            this.trackBar3.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
-            this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Size = new System.Drawing.Size(329, 136);
-            this.trackBar3.TabIndex = 2;
+            this.sideSliceTrackbar.Location = new System.Drawing.Point(2239, 868);
+            this.sideSliceTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.sideSliceTrackbar.Name = "sideSliceTrackbar";
+            this.sideSliceTrackbar.Size = new System.Drawing.Size(329, 136);
+            this.sideSliceTrackbar.TabIndex = 2;
             // 
             // menuStrip1
             // 
@@ -130,25 +130,25 @@ namespace CWIdeaTest
             this.topView.TabIndex = 5;
             this.topView.TabStop = false;
             // 
-            // pictureBox2
+            // frontView
             // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(1612, 330);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(576, 458);
-            this.pictureBox2.TabIndex = 6;
-            this.pictureBox2.TabStop = false;
+            this.frontView.Image = ((System.Drawing.Image)(resources.GetObject("frontView.Image")));
+            this.frontView.Location = new System.Drawing.Point(1612, 330);
+            this.frontView.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.frontView.Name = "frontView";
+            this.frontView.Size = new System.Drawing.Size(576, 458);
+            this.frontView.TabIndex = 6;
+            this.frontView.TabStop = false;
             // 
-            // pictureBox3
+            // sideView
             // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(2239, 330);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(576, 458);
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
+            this.sideView.Image = ((System.Drawing.Image)(resources.GetObject("sideView.Image")));
+            this.sideView.Location = new System.Drawing.Point(2239, 330);
+            this.sideView.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.sideView.Name = "sideView";
+            this.sideView.Size = new System.Drawing.Size(576, 458);
+            this.sideView.TabIndex = 7;
+            this.sideView.TabStop = false;
             // 
             // Test
             // 
@@ -156,12 +156,12 @@ namespace CWIdeaTest
             this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(3116, 1597);
-            this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.sideView);
+            this.Controls.Add(this.frontView);
             this.Controls.Add(this.topView);
             this.Controls.Add(this.topSliceButton);
-            this.Controls.Add(this.trackBar3);
-            this.Controls.Add(this.trackBar2);
+            this.Controls.Add(this.sideSliceTrackbar);
+            this.Controls.Add(this.frontSliceTrackbar);
             this.Controls.Add(this.topSliceTrackbar);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -169,13 +169,13 @@ namespace CWIdeaTest
             this.Name = "Test";
             this.Text = "Test";
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.topView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.frontView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sideView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -185,15 +185,15 @@ namespace CWIdeaTest
 
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TrackBar topSliceTrackbar;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.TrackBar trackBar3;
+        private System.Windows.Forms.TrackBar frontSliceTrackbar;
+        private System.Windows.Forms.TrackBar sideSliceTrackbar;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.Button topSliceButton;
         private System.Windows.Forms.PictureBox topView;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox frontView;
+        private System.Windows.Forms.PictureBox sideView;
     }
 }
 

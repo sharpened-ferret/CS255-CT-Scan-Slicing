@@ -58,15 +58,9 @@ namespace CWIdeaTest
 
         public void ReadData()
         {
-            // FileReader headFile = System.IO.File.Open("CThead", System.IO.FileMode.Open);
-
             BinaryReader reader = new BinaryReader(File.Open("CThead", FileMode.Open));
 
             int i, j, k;
-            //int i = 0;
-            //int k = 0;
-            //int j = 0;
-
 
 
             min = short.MaxValue;
@@ -78,7 +72,6 @@ namespace CWIdeaTest
             Int32 count = 0;
             Int32 outerCount = 0;
 
-            string fileName = @"C:\Temp\MaheshTXFI.txt";
             FileInfo fi = new FileInfo("CThead");
 
             if (fi.Exists)
