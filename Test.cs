@@ -45,6 +45,7 @@ namespace CWIdeaTest
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
 
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
+            skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
 
             if (vToolStripMenuItem.Checked)
             {
@@ -357,7 +358,8 @@ namespace CWIdeaTest
                 }
                 if (datum >= 300 && datum <= 4096)
                 {
-                    return Color.FromArgb((int)0.8 * 255, 255, 255, 255);
+                    Console.WriteLine("Boney");
+                    return Color.FromArgb((int)(0.8 * 255), 255, 255, 255);
                 }
                 else
                 {
