@@ -37,6 +37,7 @@ namespace CWIdeaTest
 
             topSliceTrackbar.Maximum = CT_z_axis - 1;
             frontSliceTrackbar.Maximum = CT_y_axis - 1;
+            sideSliceTrackbar.Maximum = CT_x_axis - 1;
             topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
@@ -80,6 +81,15 @@ namespace CWIdeaTest
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
 
             Console.WriteLine("Test Pixel " + frontImage.GetPixel(CT_x_axis / 2, CT_z_axis / 2).ToString());
+        }
+        private void sideSliceButton_Click(object sender, EventArgs e)
+        {
+            short sliceValue = (short)sideSliceTrackbar.Value;
+            sideImage = SideOnSlice(sliceValue);
+            sideView.Image = sideImage;
+            sideView.SizeMode = PictureBoxSizeMode.Zoom;
+
+            Console.WriteLine("Test Pixel " + sideImage.GetPixel(CT_x_axis / 2, CT_z_axis / 2).ToString());
         }
 
         public void ReadData()
@@ -176,6 +186,28 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, sliceNumber, i]; 
+                    col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
+                    returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
+                }
+            }
+
+            return returnScanSlice;
+        }
+
+        public Bitmap SideOnSlice(short sliceNumber)
+        {
+            int w = CT_y_axis;
+            int h = CT_z_axis;
+
+            int col;
+            double datum;
+            Bitmap returnScanSlice = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    datum = cthead[j, i, sliceNumber];
                     col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
                     returnScanSlice.SetPixel(i, j, Color.FromArgb(255, col, col, col));
                 }
