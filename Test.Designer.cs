@@ -29,9 +29,7 @@ namespace CWIdeaTest
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Test));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.topSliceTrackbar = new System.Windows.Forms.TrackBar();
             this.frontSliceTrackbar = new System.Windows.Forms.TrackBar();
             this.sideSliceTrackbar = new System.Windows.Forms.TrackBar();
@@ -44,6 +42,9 @@ namespace CWIdeaTest
             this.sideView = new System.Windows.Forms.PictureBox();
             this.frontSliceButton = new System.Windows.Forms.Button();
             this.sideSliceButton = new System.Windows.Forms.Button();
+            this.topViewLabel = new System.Windows.Forms.Label();
+            this.frontViewLabel = new System.Windows.Forms.Label();
+            this.sideViewLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).BeginInit();
@@ -53,18 +54,13 @@ namespace CWIdeaTest
             ((System.ComponentModel.ISupportInitialize)(this.sideView)).BeginInit();
             this.SuspendLayout();
             // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // topSliceTrackbar
             // 
             this.topSliceTrackbar.Location = new System.Drawing.Point(29, 346);
             this.topSliceTrackbar.Name = "topSliceTrackbar";
             this.topSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.topSliceTrackbar.TabIndex = 0;
+            this.topSliceTrackbar.ValueChanged += new System.EventHandler(this.topSliceTrackbar_ValueChanged);
             // 
             // frontSliceTrackbar
             // 
@@ -72,6 +68,7 @@ namespace CWIdeaTest
             this.frontSliceTrackbar.Name = "frontSliceTrackbar";
             this.frontSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.frontSliceTrackbar.TabIndex = 1;
+            this.frontSliceTrackbar.ValueChanged += new System.EventHandler(this.frontSliceTrackbar_ValueChanged);
             // 
             // sideSliceTrackbar
             // 
@@ -79,6 +76,7 @@ namespace CWIdeaTest
             this.sideSliceTrackbar.Name = "sideSliceTrackbar";
             this.sideSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.sideSliceTrackbar.TabIndex = 2;
+            this.sideSliceTrackbar.ValueChanged += new System.EventHandler(this.sideSliceTrackbar_ValueChanged);
             // 
             // menuStrip1
             // 
@@ -162,12 +160,42 @@ namespace CWIdeaTest
             this.sideSliceButton.Text = "Slice";
             this.sideSliceButton.UseVisualStyleBackColor = true;
             // 
+            // topViewLabel
+            // 
+            this.topViewLabel.AutoSize = true;
+            this.topViewLabel.Location = new System.Drawing.Point(139, 351);
+            this.topViewLabel.Name = "topViewLabel";
+            this.topViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.topViewLabel.TabIndex = 11;
+            this.topViewLabel.Text = "Current Slice: {}";
+            // 
+            // frontViewLabel
+            // 
+            this.frontViewLabel.AutoSize = true;
+            this.frontViewLabel.Location = new System.Drawing.Point(475, 351);
+            this.frontViewLabel.Name = "frontViewLabel";
+            this.frontViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.frontViewLabel.TabIndex = 12;
+            this.frontViewLabel.Text = "Current Slice: {}";
+            // 
+            // sideViewLabel
+            // 
+            this.sideViewLabel.AutoSize = true;
+            this.sideViewLabel.Location = new System.Drawing.Point(815, 351);
+            this.sideViewLabel.Name = "sideViewLabel";
+            this.sideViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.sideViewLabel.TabIndex = 13;
+            this.sideViewLabel.Text = "Current Slice: {}";
+            // 
             // Test
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1128, 531);
+            this.Controls.Add(this.sideViewLabel);
+            this.Controls.Add(this.frontViewLabel);
+            this.Controls.Add(this.topViewLabel);
             this.Controls.Add(this.sideSliceButton);
             this.Controls.Add(this.frontSliceButton);
             this.Controls.Add(this.sideView);
@@ -195,8 +223,6 @@ namespace CWIdeaTest
         }
 
         #endregion
-
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.TrackBar topSliceTrackbar;
         private System.Windows.Forms.TrackBar frontSliceTrackbar;
         private System.Windows.Forms.TrackBar sideSliceTrackbar;
@@ -209,6 +235,9 @@ namespace CWIdeaTest
         private System.Windows.Forms.PictureBox sideView;
         private System.Windows.Forms.Button frontSliceButton;
         private System.Windows.Forms.Button sideSliceButton;
+        private System.Windows.Forms.Label topViewLabel;
+        private System.Windows.Forms.Label frontViewLabel;
+        private System.Windows.Forms.Label sideViewLabel;
     }
 }
 

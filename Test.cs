@@ -37,6 +37,23 @@ namespace CWIdeaTest
 
             topSliceTrackbar.Maximum = CT_z_axis - 1;
             frontSliceTrackbar.Maximum = CT_y_axis - 1;
+            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
+            frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
+            sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
+        }
+        private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
+        }
+
+        private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
+        }
+
+        private void sideSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
         }
 
 
