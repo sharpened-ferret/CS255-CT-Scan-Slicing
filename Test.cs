@@ -19,6 +19,8 @@ namespace CWIdeaTest
         int CT_y_axis = 256;
         int CT_z_axis = 113;
 
+        int skin_opacity;
+
         Bitmap topImage;
         Bitmap frontImage;
         Bitmap sideImage;
@@ -41,19 +43,58 @@ namespace CWIdeaTest
             topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
+
+            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
+
+            if (vToolStripMenuItem.Checked)
+            {
+                skinOpacityTrackbar.Visible = true;
+                skinOpacityLabel.Visible = true;
+            }
+            else
+            {
+                skinOpacityTrackbar.Visible = false;
+                skinOpacityLabel.Visible = false;
+            }
         }
         private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
+            short sliceValue = (short)topSliceTrackbar.Value;
+            //if (vToolStripMenuItem.Checked)
+            if (false)
+            {
+                topImage = TopDownVolume(sliceValue);
+            }
+            else
+            {
+                topImage = TopDownSlice(sliceValue);
+            }
+            topView.Image = topImage;
+            topView.SizeMode = PictureBoxSizeMode.Zoom;
+
+            topViewLabel.Text = "Current Slice: " + sliceValue;
+
+            // topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
+
         }
 
         private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
+            short sliceValue = (short)frontSliceTrackbar.Value;
+            frontImage = FrontInSlice(sliceValue);
+            frontView.Image = frontImage;
+            frontView.SizeMode = PictureBoxSizeMode.Zoom;
+
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
         }
 
         private void sideSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
+            short sliceValue = (short)sideSliceTrackbar.Value;
+            sideImage = SideOnSlice(sliceValue);
+            sideView.Image = sideImage;
+            sideView.SizeMode = PictureBoxSizeMode.Zoom;
+
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
         }
 
@@ -66,7 +107,15 @@ namespace CWIdeaTest
         private void topSliceButton_Click(object sender, EventArgs e)
         {
             short sliceValue = (short)topSliceTrackbar.Value;
-            topImage = TopDownSlice(sliceValue);
+            //if (vToolStripMenuItem.Checked)
+            if (false)
+            {
+                topImage = TopDownVolume(sliceValue);
+            }
+            else
+            {
+                topImage = TopDownSlice(sliceValue);
+            }
             topView.Image = topImage;
             topView.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -163,12 +212,47 @@ namespace CWIdeaTest
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
             return returnScanSlice;
+        }
+
+        public Bitmap TopDownVolume(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_y_axis;
+
+            //double datum;
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    double maxCTVal = min;
+                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
+                    for (int k = sliceNumber; k < CT_z_axis; k++)
+                    {
+                        double currentVoxelCT = cthead[k, j, i];
+                        //if (currentVoxelCT > maxCTVal)
+                        //{
+                        //    maxCTVal = currentVoxelCT;
+                        //    Console.WriteLine("New Max CT: " + maxCTVal);
+                        //}
+                        Color slicePixelColor = getColour(currentVoxelCT, true, min, max, skin_opacity);
+                        if (slicePixelColor.A > pixelColour.A)
+                        {
+                            pixelColour = Color.FromArgb((slicePixelColor.A + pixelColour.A)/2, (slicePixelColor.R + pixelColour.R)/2, (slicePixelColor.G + pixelColour.G) / 2, (slicePixelColor.B + pixelColour.B) / 2);
+                        }
+                    }
+                    //Color pixelColour = getColour(maxCTVal, vToolStripMenuItem.Checked, min, max);
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+            return returnScanVolume;
         }
 
         public Bitmap FrontInSlice(short sliceNumber)
@@ -184,7 +268,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, sliceNumber, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -205,7 +289,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, i, sliceNumber];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -221,6 +305,8 @@ namespace CWIdeaTest
                 topViewLabel.ForeColor = Color.White;
                 frontViewLabel.ForeColor = Color.White;
                 sideViewLabel.ForeColor = Color.White;
+
+                skinOpacityLabel.ForeColor = Color.White;
             }
             else
             {
@@ -228,10 +314,32 @@ namespace CWIdeaTest
                 topViewLabel.ForeColor = Color.Black;
                 frontViewLabel.ForeColor = Color.Black;
                 sideViewLabel.ForeColor = Color.Black;
+
+                skinOpacityLabel.ForeColor = Color.Black;
             }
         }
 
-        private static Color getColour(double datum, bool volumeRender, int min, int max)
+        private void skinOpacityTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            skin_opacity = (int) (skinOpacityTrackbar.Value * 255) / 100;
+            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
+        }
+
+        private void vToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            if (vToolStripMenuItem.Checked)
+            {
+                skinOpacityTrackbar.Visible = true;
+                skinOpacityLabel.Visible = true;
+            }
+            else
+            {
+                skinOpacityTrackbar.Visible = false;
+                skinOpacityLabel.Visible = false;
+            }
+        }
+
+        private static Color getColour(double datum, bool volumeRender, int min, int max, int skin_opacity)
         {
             if (volumeRender)
             {
@@ -241,7 +349,7 @@ namespace CWIdeaTest
                 }
                 if (datum >= -300 && datum < 50)
                 {
-                    return Color.FromArgb((int)(0.12 * 255), 255, (int)0.79 * 255, (int)0.6 * 255);
+                    return Color.FromArgb(skin_opacity, 255, (int)0.79 * 255, (int)0.6 * 255);
                 }
                 if (datum < 300 && datum >= 50)
                 {

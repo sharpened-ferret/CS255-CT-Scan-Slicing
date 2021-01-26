@@ -49,6 +49,8 @@ namespace CWIdeaTest
             this.frontViewLabel = new System.Windows.Forms.Label();
             this.sideViewLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.skinOpacityTrackbar = new System.Windows.Forms.TrackBar();
+            this.skinOpacityLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).BeginInit();
@@ -57,6 +59,7 @@ namespace CWIdeaTest
             ((System.ComponentModel.ISupportInitialize)(this.frontView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideView)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.skinOpacityTrackbar)).BeginInit();
             this.SuspendLayout();
             // 
             // topSliceTrackbar
@@ -106,7 +109,7 @@ namespace CWIdeaTest
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -125,14 +128,15 @@ namespace CWIdeaTest
             this.vToolStripMenuItem.CheckOnClick = true;
             this.vToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.vToolStripMenuItem.Name = "vToolStripMenuItem";
-            this.vToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.vToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.vToolStripMenuItem.Text = "Volume Rendering";
+            this.vToolStripMenuItem.CheckedChanged += new System.EventHandler(this.vToolStripMenuItem_CheckedChanged);
             // 
             // darkModeToolStripMenuItem
             // 
             this.darkModeToolStripMenuItem.CheckOnClick = true;
             this.darkModeToolStripMenuItem.Name = "darkModeToolStripMenuItem";
-            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.darkModeToolStripMenuItem.Text = "Dark Mode";
             this.darkModeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.darkModeToolStripMenuItem_CheckStateChanged);
             // 
@@ -225,6 +229,8 @@ namespace CWIdeaTest
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.skinOpacityLabel);
+            this.panel1.Controls.Add(this.skinOpacityTrackbar);
             this.panel1.Controls.Add(this.sideSliceButton);
             this.panel1.Controls.Add(this.sideViewLabel);
             this.panel1.Controls.Add(this.topView);
@@ -242,6 +248,27 @@ namespace CWIdeaTest
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1150, 478);
             this.panel1.TabIndex = 14;
+            // 
+            // skinOpacityTrackbar
+            // 
+            this.skinOpacityTrackbar.Location = new System.Drawing.Point(29, 421);
+            this.skinOpacityTrackbar.Maximum = 100;
+            this.skinOpacityTrackbar.Name = "skinOpacityTrackbar";
+            this.skinOpacityTrackbar.Size = new System.Drawing.Size(191, 45);
+            this.skinOpacityTrackbar.TabIndex = 14;
+            this.skinOpacityTrackbar.Value = 12;
+            this.skinOpacityTrackbar.Visible = false;
+            this.skinOpacityTrackbar.ValueChanged += new System.EventHandler(this.skinOpacityTrackbar_ValueChanged);
+            // 
+            // skinOpacityLabel
+            // 
+            this.skinOpacityLabel.AutoSize = true;
+            this.skinOpacityLabel.Location = new System.Drawing.Point(226, 421);
+            this.skinOpacityLabel.Name = "skinOpacityLabel";
+            this.skinOpacityLabel.Size = new System.Drawing.Size(81, 13);
+            this.skinOpacityLabel.TabIndex = 15;
+            this.skinOpacityLabel.Text = "Skin Opacity: {}";
+            this.skinOpacityLabel.Visible = false;
             // 
             // Test
             // 
@@ -264,6 +291,7 @@ namespace CWIdeaTest
             ((System.ComponentModel.ISupportInitialize)(this.sideView)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.skinOpacityTrackbar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -289,6 +317,8 @@ namespace CWIdeaTest
         private System.Windows.Forms.ToolStripMenuItem vToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkModeToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label skinOpacityLabel;
+        private System.Windows.Forms.TrackBar skinOpacityTrackbar;
     }
 }
 
