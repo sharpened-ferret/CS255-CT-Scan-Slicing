@@ -235,15 +235,19 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     int transparency = 255;
-                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
                     double lighting = 1.0;
                     for (int k = sliceNumber; k < CT_z_axis; k++)
                     {
+                        float transparencyMod = transparency / 255;
                         double voxelVal = cthead[k, j, i];
                         Color voxelColour = getColour(voxelVal, true, min, max, skin_opacity);
-                        byte newR = (byte)(pixelColour.R + ((voxelColour.A * lighting * voxelColour.R) / 255));
-                        byte newG = (byte)(pixelColour.G + ((voxelColour.A * lighting * voxelColour.G) / 255));
-                        byte newB = (byte)(pixelColour.B + ((voxelColour.A * lighting * voxelColour.B) / 255));
+                        //int newR = Math.Min(255, (int)(pixelColour.R + ((transparencyMod*voxelColour.A * lighting * voxelColour.R) / 255)));
+                        //int newG = Math.Min(255, (int)(pixelColour.G + ((transparencyMod*voxelColour.A * lighting * voxelColour.G) / 255)));
+                        //int newB = Math.Min(255, (int)(pixelColour.B + ((transparencyMod*voxelColour.A * lighting * voxelColour.B) / 255)));
+                        int newR = Math.Min(255, (int)(pixelColour.R + ((voxelColour.A * lighting * voxelColour.R) / 255)));
+                        int newG = Math.Min(255, (int)(pixelColour.G + ((voxelColour.A * lighting * voxelColour.G) / 255)));
+                        int newB = Math.Min(255, (int)(pixelColour.B + ((voxelColour.A * lighting * voxelColour.B) / 255)));
                         if (i == 112 && j == 112 && k == 50)
                         {
                             //Console.WriteLine("R:" + newR + " G: " + newG + " B: " + newB);
@@ -251,10 +255,12 @@ namespace CWIdeaTest
                             //Console.WriteLine(voxelColour.A+" "+(voxelColour.A / 255));
                         }
 
-                        transparency *= (255 - voxelColour.A);
+                        transparency = (int)(transparency * (float)((255 - voxelColour.A) / 255));
+                        //Console.WriteLine("A: "+ voxelColour.A + "Transparency: "+transparency);
 
-                        pixelColour = Color.FromArgb(255, newR, newG, newB);
+                        pixelColour = Color.FromArgb(255, newR, newG, newB);                        
                     }
+                    //Console.WriteLine(transparency);
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
@@ -355,7 +361,8 @@ namespace CWIdeaTest
                 }
                 if (datum >= -300 && datum < 50)
                 {
-                    return Color.FromArgb(skin_opacity, 255, (int)(0.79 * 255), (int)(0.6 * 255));
+                    //return Color.FromArgb(skin_opacity, 255, (int)(0.79 * 255), (int)(0.6 * 255));
+                    return Color.FromArgb(skin_opacity, 255, 201, 153);
                 }
                 if (datum < 300 && datum >= 50)
                 {
