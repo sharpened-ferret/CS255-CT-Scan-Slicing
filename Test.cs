@@ -61,8 +61,8 @@ namespace CWIdeaTest
         private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             short sliceValue = (short)topSliceTrackbar.Value;
-            //if (vToolStripMenuItem.Checked)
-            if (false)
+            if (vToolStripMenuItem.Checked)
+            //if (false)
             {
                 topImage = TopDownVolume(sliceValue);
             }
@@ -108,10 +108,11 @@ namespace CWIdeaTest
         private void topSliceButton_Click(object sender, EventArgs e)
         {
             short sliceValue = (short)topSliceTrackbar.Value;
-            //if (vToolStripMenuItem.Checked)
-            if (false)
+            if (vToolStripMenuItem.Checked)
+            //if (false)
             {
                 topImage = TopDownVolume(sliceValue);
+                Console.WriteLine("Test");
             }
             else
             {
@@ -240,21 +241,23 @@ namespace CWIdeaTest
                     {
                         double voxelVal = cthead[k, j, i];
                         Color voxelColour = getColour(voxelVal, true, min, max, skin_opacity);
-                        byte newR = (byte)(pixelColour.R + ((voxelColour.A / 255) * lighting * voxelColour.R));
-                        byte newG = (byte)(pixelColour.G + ((voxelColour.A / 255) * lighting * voxelColour.G));
-                        byte newB = (byte)(pixelColour.B + ((voxelColour.A / 255) * lighting * voxelColour.B));
+                        byte newR = (byte)(pixelColour.R + ((voxelColour.A * lighting * voxelColour.R) / 255));
+                        byte newG = (byte)(pixelColour.G + ((voxelColour.A * lighting * voxelColour.G) / 255));
+                        byte newB = (byte)(pixelColour.B + ((voxelColour.A * lighting * voxelColour.B) / 255));
+                        if (i == 112 && j == 112 && k == 50)
+                        {
+                            //Console.WriteLine("R:" + newR + " G: " + newG + " B: " + newB);
+                            //Console.WriteLine("R:" + voxelColour.R + " G: " + voxelColour.G + " B: " + voxelColour.B);
+                            //Console.WriteLine(voxelColour.A+" "+(voxelColour.A / 255));
+                        }
 
                         transparency *= (255 - voxelColour.A);
 
                         pixelColour = Color.FromArgb(255, newR, newG, newB);
-                        Console.WriteLine("Slice Depth: " + k);
                     }
-                    Console.WriteLine("Test");
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
-                Console.WriteLine("Outertest" + j);
             }
-            Console.WriteLine("Outest Test");
             return returnScanVolume;
         }
 
