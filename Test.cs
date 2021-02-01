@@ -233,26 +233,28 @@ namespace CWIdeaTest
             {
                 for (int i = 0; i < w; i++)
                 {
-                    double maxCTVal = min;
-                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
+                    int transparency = 255;
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    double lighting = 1.0;
                     for (int k = sliceNumber; k < CT_z_axis; k++)
                     {
-                        double currentVoxelCT = cthead[k, j, i];
-                        //if (currentVoxelCT > maxCTVal)
-                        //{
-                        //    maxCTVal = currentVoxelCT;
-                        //    Console.WriteLine("New Max CT: " + maxCTVal);
-                        //}
-                        Color slicePixelColor = getColour(currentVoxelCT, true, min, max, skin_opacity);
-                        if (slicePixelColor.A > pixelColour.A)
-                        {
-                            pixelColour = Color.FromArgb((slicePixelColor.A + pixelColour.A)/2, (slicePixelColor.R + pixelColour.R)/2, (slicePixelColor.G + pixelColour.G) / 2, (slicePixelColor.B + pixelColour.B) / 2);
-                        }
+                        double voxelVal = cthead[k, j, i];
+                        Color voxelColour = getColour(voxelVal, true, min, max, skin_opacity);
+                        byte newR = (byte)(pixelColour.R + ((voxelColour.A / 255) * lighting * voxelColour.R));
+                        byte newG = (byte)(pixelColour.G + ((voxelColour.A / 255) * lighting * voxelColour.G));
+                        byte newB = (byte)(pixelColour.B + ((voxelColour.A / 255) * lighting * voxelColour.B));
+
+                        transparency *= (255 - voxelColour.A);
+
+                        pixelColour = Color.FromArgb(255, newR, newG, newB);
+                        Console.WriteLine("Slice Depth: " + k);
                     }
-                    //Color pixelColour = getColour(maxCTVal, vToolStripMenuItem.Checked, min, max);
+                    Console.WriteLine("Test");
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
+                Console.WriteLine("Outertest" + j);
             }
+            Console.WriteLine("Outest Test");
             return returnScanVolume;
         }
 
@@ -350,7 +352,7 @@ namespace CWIdeaTest
                 }
                 if (datum >= -300 && datum < 50)
                 {
-                    return Color.FromArgb(skin_opacity, 255, (int)0.79 * 255, (int)0.6 * 255);
+                    return Color.FromArgb(skin_opacity, 255, (int)(0.79 * 255), (int)(0.6 * 255));
                 }
                 if (datum < 300 && datum >= 50)
                 {
@@ -358,7 +360,6 @@ namespace CWIdeaTest
                 }
                 if (datum >= 300 && datum <= 4096)
                 {
-                    Console.WriteLine("Boney");
                     return Color.FromArgb((int)(0.8 * 255), 255, 255, 255);
                 }
                 else
@@ -372,5 +373,15 @@ namespace CWIdeaTest
                 return Color.FromArgb(255, col, col, col);
             }
         }
+
+        //private static Color colourComposite(Color colour1, Color colour2, float lighting)
+        //{
+        //    Color returnColour = Color.FromArgb(0, 0, 0, 0);
+        //    float colour1Weighting = (colour1.A / 255) * lighting;
+
+        //    returnColour = colour1.A
+
+        //    return returnColour;
+        //}
     }
 }
