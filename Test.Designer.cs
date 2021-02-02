@@ -37,7 +37,8 @@ namespace CWIdeaTest
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.vToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.volumeRenderingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.depthRenderingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topSliceButton = new System.Windows.Forms.Button();
             this.topView = new System.Windows.Forms.PictureBox();
@@ -51,7 +52,6 @@ namespace CWIdeaTest
             this.panel1 = new System.Windows.Forms.Panel();
             this.skinOpacityLabel = new System.Windows.Forms.Label();
             this.skinOpacityTrackbar = new System.Windows.Forms.TrackBar();
-            this.depthRenderingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).BeginInit();
@@ -95,7 +95,7 @@ namespace CWIdeaTest
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(608, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1071, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -117,22 +117,28 @@ namespace CWIdeaTest
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.vToolStripMenuItem,
-            this.depthRenderingToolStripMenuItem,
+            this.volumeRenderingMenuItem,
+            this.depthRenderingMenuItem,
             this.darkModeToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
-            // vToolStripMenuItem
+            // volumeRenderingMenuItem
             // 
-            this.vToolStripMenuItem.Checked = true;
-            this.vToolStripMenuItem.CheckOnClick = true;
-            this.vToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.vToolStripMenuItem.Name = "vToolStripMenuItem";
-            this.vToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.vToolStripMenuItem.Text = "Volume Rendering";
-            this.vToolStripMenuItem.CheckedChanged += new System.EventHandler(this.vToolStripMenuItem_CheckedChanged);
+            this.volumeRenderingMenuItem.Checked = true;
+            this.volumeRenderingMenuItem.CheckOnClick = true;
+            this.volumeRenderingMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.volumeRenderingMenuItem.Name = "volumeRenderingMenuItem";
+            this.volumeRenderingMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.volumeRenderingMenuItem.Text = "Volume Rendering";
+            this.volumeRenderingMenuItem.CheckedChanged += new System.EventHandler(this.vToolStripMenuItem_CheckedChanged);
+            // 
+            // depthRenderingMenuItem
+            // 
+            this.depthRenderingMenuItem.Name = "depthRenderingMenuItem";
+            this.depthRenderingMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.depthRenderingMenuItem.Text = "Depth Rendering";
             // 
             // darkModeToolStripMenuItem
             // 
@@ -247,7 +253,7 @@ namespace CWIdeaTest
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(608, 373);
+            this.panel1.Size = new System.Drawing.Size(1071, 499);
             this.panel1.TabIndex = 14;
             // 
             // skinOpacityLabel
@@ -271,18 +277,12 @@ namespace CWIdeaTest
             this.skinOpacityTrackbar.Visible = false;
             this.skinOpacityTrackbar.ValueChanged += new System.EventHandler(this.skinOpacityTrackbar_ValueChanged);
             // 
-            // depthRenderingToolStripMenuItem
-            // 
-            this.depthRenderingToolStripMenuItem.Name = "depthRenderingToolStripMenuItem";
-            this.depthRenderingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.depthRenderingToolStripMenuItem.Text = "Depth Rendering";
-            // 
             // Test
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(608, 373);
+            this.ClientSize = new System.Drawing.Size(1071, 499);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
@@ -321,12 +321,12 @@ namespace CWIdeaTest
         private System.Windows.Forms.Label frontViewLabel;
         private System.Windows.Forms.Label sideViewLabel;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem volumeRenderingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkModeToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label skinOpacityLabel;
         private System.Windows.Forms.TrackBar skinOpacityTrackbar;
-        private System.Windows.Forms.ToolStripMenuItem depthRenderingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem depthRenderingMenuItem;
     }
 }
 

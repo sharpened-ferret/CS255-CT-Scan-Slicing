@@ -49,7 +49,7 @@ namespace CWIdeaTest
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
             skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
 
-            if (vToolStripMenuItem.Checked)
+            if (volumeRenderingMenuItem.Checked)
             {
                 skinOpacityTrackbar.Visible = true;
                 skinOpacityLabel.Visible = true;
@@ -62,48 +62,19 @@ namespace CWIdeaTest
         }
         private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            short sliceValue = (short)topSliceTrackbar.Value;
-            if (vToolStripMenuItem.Checked)
-            //if (false)
-            {
-                topImage = TopDownVolume(sliceValue);
-            }
-            else
-            {
-                topImage = TopDownSlice(sliceValue);
-            }
-            topView.Image = topImage;
-            topView.SizeMode = PictureBoxSizeMode.Zoom;
-
-            topViewLabel.Text = "Current Slice: " + sliceValue;
-
-            // topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
-
+            updateTopView();
+            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
         }
 
         private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            short sliceValue = (short)frontSliceTrackbar.Value;
-            if (vToolStripMenuItem.Checked)
-            {
-                frontImage = FrontInVolume(sliceValue);
-            }
-            else
-            {
-                frontImage = FrontInSlice(sliceValue);
-            }
-            frontView.Image = frontImage;
-            frontView.SizeMode = PictureBoxSizeMode.Zoom;
-
+            updateFrontView();
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
         }
 
         private void sideSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            short sliceValue = (short)sideSliceTrackbar.Value;
-            sideImage = SideOnSlice(sliceValue);
-            sideView.Image = sideImage;
-            sideView.SizeMode = PictureBoxSizeMode.Zoom;
+            updateSideView();
 
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
         }
@@ -116,12 +87,29 @@ namespace CWIdeaTest
 
         private void topSliceButton_Click(object sender, EventArgs e)
         {
-            short sliceValue = (short)topSliceTrackbar.Value;
-            if (vToolStripMenuItem.Checked)
-            //if (false)
+            updateTopView();
+        }
+
+        private void frontSliceButton_Click(object sender, EventArgs e)
+        {
+            updateFrontView();
+        }
+        private void sideSliceButton_Click(object sender, EventArgs e)
+        {
+            updateSideView();
+        }
+
+
+        private void updateTopView()
+        {
+            short sliceValue = (short) topSliceTrackbar.Value;
+            if (volumeRenderingMenuItem.Checked)
             {
                 topImage = TopDownVolume(sliceValue);
-                Console.WriteLine("Test");
+            }
+            else if (depthRenderingMenuItem.Checked)
+            {
+                topImage = TopDownDepth(sliceValue);
             }
             else
             {
@@ -129,27 +117,44 @@ namespace CWIdeaTest
             }
             topView.Image = topImage;
             topView.SizeMode = PictureBoxSizeMode.Zoom;
-
-            Console.WriteLine("Test Pixel " + topImage.GetPixel(CT_x_axis/2,CT_y_axis/2).ToString());
         }
 
-        private void frontSliceButton_Click(object sender, EventArgs e)
+        private void updateFrontView()
         {
             short sliceValue = (short)frontSliceTrackbar.Value;
-            frontImage = FrontInSlice(sliceValue);
+            if (volumeRenderingMenuItem.Checked)
+            {
+                frontImage = FrontInVolume(sliceValue);
+            }
+            else {
+                if (depthRenderingMenuItem.Checked)
+                {
+                    frontImage = FrontInDepth(sliceValue);
+                }
+                else
+                {
+                    frontImage = FrontInSlice(sliceValue);
+                }
+            }
+            
             frontView.Image = frontImage;
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
-
-            Console.WriteLine("Test Pixel " + frontImage.GetPixel(CT_x_axis / 2, CT_z_axis / 2).ToString());
+            frontView.Refresh();
         }
-        private void sideSliceButton_Click(object sender, EventArgs e)
+
+        private void updateSideView()
         {
-            short sliceValue = (short)sideSliceTrackbar.Value;
-            sideImage = SideOnSlice(sliceValue);
+            short sliceValue = (short) sideSliceTrackbar.Value;
+            if (volumeRenderingMenuItem.Checked)
+            {
+                sideImage = SideOnVolume(sliceValue);
+            }
+            else
+            {
+                sideImage = SideOnSlice(sliceValue);
+            }
             sideView.Image = sideImage;
             sideView.SizeMode = PictureBoxSizeMode.Zoom;
-
-            Console.WriteLine("Test Pixel " + sideImage.GetPixel(CT_x_axis / 2, CT_z_axis / 2).ToString());
         }
 
         public void ReadData()
@@ -223,7 +228,7 @@ namespace CWIdeaTest
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
+                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -270,45 +275,11 @@ namespace CWIdeaTest
             return returnScanVolume;
         }
 
-        public Bitmap TopDownVolumeBackToFront(short sliceNumber)
-        {
-            int w = CT_x_axis;
-            int h = CT_y_axis;
-
-            //double datum;
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    double lighting = 1.0;
-                    for (int k = CT_z_axis - 1; k > sliceNumber; k--)
-                    {
-                        double voxelVal = cthead[k, j, i];
-                        Color voxelColour = getColour(voxelVal, true);
-                        double opacity = voxelColour.A / 255;
-                        Console.WriteLine(opacity);
-                        int newR = Math.Min(255, (int)( (opacity * lighting * voxelColour.R) + ((1 - opacity)*pixelColour.R) ));
-                        int newG = Math.Min(255, (int)( (opacity * lighting * voxelColour.G) + ((1 - opacity)*pixelColour.G) ));
-                        int newB = Math.Min(255, (int)( (opacity * lighting * voxelColour.B) + ((1 - opacity)*pixelColour.B) ));
-                        pixelColour = Color.FromArgb(255, newR, newG, newB);
-
-                    }
-                    //Console.WriteLine(transparency);
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
-            }
-            return returnScanVolume;
-        }
-
         public Bitmap TopDownVolume(short sliceNumber)
         {
             int w = CT_x_axis;
             int h = CT_y_axis;
 
-            //double datum;
             Bitmap returnScanVolume = new Bitmap(w, h);
 
             for (int j = 0; j < h; j++)
@@ -324,41 +295,45 @@ namespace CWIdeaTest
                         {
                             double voxelVal = cthead[k, j, i];
                             Color voxelColour = getColour(voxelVal, true);
-                            //int newR = Math.Min(255, (int)(pixelColour.R + ((transparencyMod*voxelColour.A * lighting * voxelColour.R) / 255)));
-                            //int newG = Math.Min(255, (int)(pixelColour.G + ((transparencyMod*voxelColour.A * lighting * voxelColour.G) / 255)));
-                            //int newB = Math.Min(255, (int)(pixelColour.B + ((transparencyMod*voxelColour.A * lighting * voxelColour.B) / 255)));
                             int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
                             int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
                             int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
-                            if (i == 112 && j == 112 && k == 50)
-                            {
-                                //Console.WriteLine("R:" + newR + " G: " + newG + " B: " + newB);
-                                //Console.WriteLine("R:" + voxelColour.R + " G: " + voxelColour.G + " B: " + voxelColour.B);
-                                //Console.WriteLine(voxelColour.A+" "+(voxelColour.A / 255));
-                            }
 
                             double transparencyOffset = (double) voxelColour.A / 255;
                             transparency = transparency * (1.0f - transparencyOffset);
 
-                            //transparency = (int) transparencyMod*255;
-                            //if (voxelColour.A != 0)
-                            if (false)
-                            {
-                                Console.WriteLine(voxelColour);
-                                Console.WriteLine("Transparency Offset: " + transparencyOffset + "Transparency: " + transparency);
-                            }
-
                             pixelColour = Color.FromArgb(255, newR, newG, newB);
                         }
                     }
-                    //Console.WriteLine(transparency);
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
             return returnScanVolume;
         }
 
-        public Bitmap FrontInVolume(short sliceNumber)
+        
+        public Bitmap FrontInSlice(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_z_axis;
+
+            double datum;
+            Bitmap returnScanSlice = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    datum = cthead[j, sliceNumber, i];
+                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
+                    returnScanSlice.SetPixel(i, j, currentCol);
+                }
+            }
+
+            return returnScanSlice;
+        }
+
+        public Bitmap FrontInDepth(short sliceNumber)
         {
             int w = CT_x_axis;
             int h = CT_z_axis;
@@ -394,26 +369,80 @@ namespace CWIdeaTest
             return returnScanVolume;
         }
 
-        public Bitmap FrontInSlice(short sliceNumber)
+        public Bitmap FrontInVolume(short sliceNumber)
         {
             int w = CT_x_axis;
             int h = CT_z_axis;
 
-            double datum;
-            Bitmap returnScanSlice = new Bitmap(w, h);
+            Bitmap returnScanVolume = new Bitmap(w, h);
 
             for (int j = 0; j < h; j++)
             {
                 for (int i = 0; i < w; i++)
                 {
-                    datum = cthead[j, sliceNumber, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
-                    returnScanSlice.SetPixel(i, j, currentCol);
+                    double transparency = 1.0;
+                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
+                    double lighting = 1.0;
+                    for (int k = sliceNumber; k < CT_y_axis; k++)
+                    {
+                        if (transparency > 0)
+                        {
+                            double voxelVal = cthead[j, k, i];
+                            Color voxelColour = getColour(voxelVal, true);
+                            int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
+                            int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
+                            int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
+
+                            double transparencyOffset = (double)voxelColour.A / 255;
+                            transparency = transparency * (1.0f - transparencyOffset);
+
+                            pixelColour = Color.FromArgb(255, newR, newG, newB);
+                        }
+                    }
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+            //Console.WriteLine("Updated View");
+            return returnScanVolume;
+        }
+
+        public Bitmap SideOnVolume(short sliceNumber)
+        {
+            int w = CT_y_axis;
+            int h = CT_z_axis;
+
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    double transparency = 1.0;
+                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
+                    double lighting = 1.0;
+                    for (int k = sliceNumber; k < CT_x_axis; k++)
+                    {
+                        if (transparency > 0)
+                        {
+                            double voxelVal = cthead[j, i, k];
+                            Color voxelColour = getColour(voxelVal, true);
+                            int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
+                            int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
+                            int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
+
+                            double transparencyOffset = (double)voxelColour.A / 255;
+                            transparency *= (1.0f - transparencyOffset);
+
+                            pixelColour = Color.FromArgb(255, newR, newG, newB);
+                        }
+                    }
+                    returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
 
-            return returnScanSlice;
+            return returnScanVolume;
         }
+
 
         public Bitmap SideOnSlice(short sliceNumber)
         {
@@ -428,7 +457,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, i, sliceNumber];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
+                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -466,7 +495,7 @@ namespace CWIdeaTest
 
         private void vToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            if (vToolStripMenuItem.Checked)
+            if (volumeRenderingMenuItem.Checked)
             {
                 skinOpacityTrackbar.Visible = true;
                 skinOpacityLabel.Visible = true;
