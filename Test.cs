@@ -14,12 +14,14 @@ namespace CWIdeaTest
     public partial class Test : Form
     {
         short[,,] cthead;
-        short min, max; //min/max value in the 3D volume data set
+        public short min, max; //min/max value in the 3D volume data set
         int CT_x_axis = 256;
         int CT_y_axis = 256;
         int CT_z_axis = 113;
 
-        int skin_opacity;
+        public int depthBoneBrightness = 6;
+
+        public int skin_opacity;
 
         Bitmap topImage;
         Bitmap frontImage;
@@ -82,7 +84,14 @@ namespace CWIdeaTest
         private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             short sliceValue = (short)frontSliceTrackbar.Value;
-            frontImage = FrontInSlice(sliceValue);
+            if (vToolStripMenuItem.Checked)
+            {
+                frontImage = FrontInVolume(sliceValue);
+            }
+            else
+            {
+                frontImage = FrontInSlice(sliceValue);
+            }
             frontView.Image = frontImage;
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -214,12 +223,84 @@ namespace CWIdeaTest
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
             return returnScanSlice;
+        }
+
+        //Depth-based render
+        public Bitmap TopDownDepth(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_y_axis;
+
+            //double datum;
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    bool bone = false;
+                    int firstIntersectDepth = 255;
+                    for (int k = CT_z_axis - 1; k > sliceNumber; k--)
+                    {
+                        double voxelVal = cthead[k, j, i];
+                        if (voxelVal > 400)
+                        {
+                            bone = true;
+                            if (k < firstIntersectDepth)
+                            {
+                                firstIntersectDepth = Math.Max(2, k / depthBoneBrightness);
+                            }
+                        }
+                    }
+                    if (bone == true)
+                    {
+                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
+                    }
+                    //Console.WriteLine(transparency);
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+            return returnScanVolume;
+        }
+
+        public Bitmap TopDownVolumeBackToFront(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_y_axis;
+
+            //double datum;
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    double lighting = 1.0;
+                    for (int k = CT_z_axis - 1; k > sliceNumber; k--)
+                    {
+                        double voxelVal = cthead[k, j, i];
+                        Color voxelColour = getColour(voxelVal, true);
+                        double opacity = voxelColour.A / 255;
+                        Console.WriteLine(opacity);
+                        int newR = Math.Min(255, (int)( (opacity * lighting * voxelColour.R) + ((1 - opacity)*pixelColour.R) ));
+                        int newG = Math.Min(255, (int)( (opacity * lighting * voxelColour.G) + ((1 - opacity)*pixelColour.G) ));
+                        int newB = Math.Min(255, (int)( (opacity * lighting * voxelColour.B) + ((1 - opacity)*pixelColour.B) ));
+                        pixelColour = Color.FromArgb(255, newR, newG, newB);
+
+                    }
+                    //Console.WriteLine(transparency);
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+            return returnScanVolume;
         }
 
         public Bitmap TopDownVolume(short sliceNumber)
@@ -234,36 +315,82 @@ namespace CWIdeaTest
             {
                 for (int i = 0; i < w; i++)
                 {
-                    int transparency = 255;
+                    double transparency = 1.0;
                     Color pixelColour = Color.FromArgb(0, 0, 0, 0);
                     double lighting = 1.0;
                     for (int k = sliceNumber; k < CT_z_axis; k++)
                     {
-                        float transparencyMod = transparency / 255;
-                        double voxelVal = cthead[k, j, i];
-                        Color voxelColour = getColour(voxelVal, true, min, max, skin_opacity);
-                        //int newR = Math.Min(255, (int)(pixelColour.R + ((transparencyMod*voxelColour.A * lighting * voxelColour.R) / 255)));
-                        //int newG = Math.Min(255, (int)(pixelColour.G + ((transparencyMod*voxelColour.A * lighting * voxelColour.G) / 255)));
-                        //int newB = Math.Min(255, (int)(pixelColour.B + ((transparencyMod*voxelColour.A * lighting * voxelColour.B) / 255)));
-                        int newR = Math.Min(255, (int)(pixelColour.R + ((voxelColour.A * lighting * voxelColour.R) / 255)));
-                        int newG = Math.Min(255, (int)(pixelColour.G + ((voxelColour.A * lighting * voxelColour.G) / 255)));
-                        int newB = Math.Min(255, (int)(pixelColour.B + ((voxelColour.A * lighting * voxelColour.B) / 255)));
-                        if (i == 112 && j == 112 && k == 50)
+                        if (transparency > 0)
                         {
-                            //Console.WriteLine("R:" + newR + " G: " + newG + " B: " + newB);
-                            //Console.WriteLine("R:" + voxelColour.R + " G: " + voxelColour.G + " B: " + voxelColour.B);
-                            //Console.WriteLine(voxelColour.A+" "+(voxelColour.A / 255));
+                            double voxelVal = cthead[k, j, i];
+                            Color voxelColour = getColour(voxelVal, true);
+                            //int newR = Math.Min(255, (int)(pixelColour.R + ((transparencyMod*voxelColour.A * lighting * voxelColour.R) / 255)));
+                            //int newG = Math.Min(255, (int)(pixelColour.G + ((transparencyMod*voxelColour.A * lighting * voxelColour.G) / 255)));
+                            //int newB = Math.Min(255, (int)(pixelColour.B + ((transparencyMod*voxelColour.A * lighting * voxelColour.B) / 255)));
+                            int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
+                            int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
+                            int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
+                            if (i == 112 && j == 112 && k == 50)
+                            {
+                                //Console.WriteLine("R:" + newR + " G: " + newG + " B: " + newB);
+                                //Console.WriteLine("R:" + voxelColour.R + " G: " + voxelColour.G + " B: " + voxelColour.B);
+                                //Console.WriteLine(voxelColour.A+" "+(voxelColour.A / 255));
+                            }
+
+                            double transparencyOffset = (double) voxelColour.A / 255;
+                            transparency = transparency * (1.0f - transparencyOffset);
+
+                            //transparency = (int) transparencyMod*255;
+                            //if (voxelColour.A != 0)
+                            if (false)
+                            {
+                                Console.WriteLine(voxelColour);
+                                Console.WriteLine("Transparency Offset: " + transparencyOffset + "Transparency: " + transparency);
+                            }
+
+                            pixelColour = Color.FromArgb(255, newR, newG, newB);
                         }
-
-                        transparency = (int)(transparency * (float)((255 - voxelColour.A) / 255));
-                        //Console.WriteLine("A: "+ voxelColour.A + "Transparency: "+transparency);
-
-                        pixelColour = Color.FromArgb(255, newR, newG, newB);                        
                     }
                     //Console.WriteLine(transparency);
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
+            return returnScanVolume;
+        }
+
+        public Bitmap FrontInVolume(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_z_axis;
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    bool bone = false;
+                    int firstIntersectDepth = 255;
+                    for (int k = 0; k < CT_y_axis; k++)
+                    {
+                        double voxelVal = cthead[j, k, i];
+                        if (voxelVal > 400)
+                        {
+                            bone = true;
+                            if (k < firstIntersectDepth)
+                            {
+                                firstIntersectDepth = Math.Max(2, k / depthBoneBrightness);
+                            }
+                        }
+                    }
+                    if (bone == true)
+                    {
+                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
+                    }
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+
             return returnScanVolume;
         }
 
@@ -280,7 +407,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, sliceNumber, i];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -301,7 +428,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, i, sliceNumber];
-                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked, min, max, skin_opacity);
+                    Color currentCol = getColour(datum, vToolStripMenuItem.Checked);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -351,7 +478,7 @@ namespace CWIdeaTest
             }
         }
 
-        private static Color getColour(double datum, bool volumeRender, int min, int max, int skin_opacity)
+        private Color getColour(double datum, bool volumeRender)
         {
             if (volumeRender)
             {
@@ -370,7 +497,7 @@ namespace CWIdeaTest
                 }
                 if (datum >= 300 && datum <= 4096)
                 {
-                    return Color.FromArgb((int)(0.8 * 255), 255, 255, 255);
+                    return Color.FromArgb((int)(1.0 * 255), 255, 255, 255);
                 }
                 else
                 {
