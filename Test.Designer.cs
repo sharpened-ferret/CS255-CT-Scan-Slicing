@@ -132,7 +132,7 @@ namespace CWIdeaTest
             this.volumeRenderingMenuItem.Name = "volumeRenderingMenuItem";
             this.volumeRenderingMenuItem.Size = new System.Drawing.Size(180, 22);
             this.volumeRenderingMenuItem.Text = "Volume Rendering";
-            this.volumeRenderingMenuItem.CheckedChanged += new System.EventHandler(this.vToolStripMenuItem_CheckedChanged);
+            this.volumeRenderingMenuItem.CheckedChanged += new System.EventHandler(this.volumeRenderingMenuItem_CheckedChanged);
             // 
             // depthRenderingMenuItem
             // 

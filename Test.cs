@@ -60,6 +60,7 @@ namespace CWIdeaTest
                 skinOpacityLabel.Visible = false;
             }
         }
+
         private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             updateTopView();
@@ -139,7 +140,6 @@ namespace CWIdeaTest
             
             frontView.Image = frontImage;
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
-            frontView.Refresh();
         }
 
         private void updateSideView()
@@ -310,7 +310,6 @@ namespace CWIdeaTest
             }
             return returnScanVolume;
         }
-
         
         public Bitmap FrontInSlice(short sliceNumber)
         {
@@ -443,7 +442,6 @@ namespace CWIdeaTest
             return returnScanVolume;
         }
 
-
         public Bitmap SideOnSlice(short sliceNumber)
         {
             int w = CT_y_axis;
@@ -493,7 +491,7 @@ namespace CWIdeaTest
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
         }
 
-        private void vToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        private void volumeRenderingMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             if (volumeRenderingMenuItem.Checked)
             {
@@ -506,6 +504,8 @@ namespace CWIdeaTest
                 skinOpacityLabel.Visible = false;
             }
         }
+
+
 
         private Color getColour(double datum, bool volumeRender)
         {
@@ -539,15 +539,5 @@ namespace CWIdeaTest
                 return Color.FromArgb(255, col, col, col);
             }
         }
-
-        //private static Color colourComposite(Color colour1, Color colour2, float lighting)
-        //{
-        //    Color returnColour = Color.FromArgb(0, 0, 0, 0);
-        //    float colour1Weighting = (colour1.A / 255) * lighting;
-
-        //    returnColour = colour1.A
-
-        //    return returnColour;
-        //}
     }
 }
