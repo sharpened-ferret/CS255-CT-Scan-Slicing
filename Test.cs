@@ -46,7 +46,7 @@ namespace CWIdeaTest
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
 
-            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
+            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
             skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
 
             if (volumeRenderingMenuItem.Checked)
@@ -490,7 +490,7 @@ namespace CWIdeaTest
         private void skinOpacityTrackbar_ValueChanged(object sender, EventArgs e)
         {
             skin_opacity = (int) (skinOpacityTrackbar.Value * 255) / 100;
-            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%";
+            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
         }
 
         private void vToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
