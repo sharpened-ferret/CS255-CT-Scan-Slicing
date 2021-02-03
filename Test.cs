@@ -48,7 +48,7 @@ namespace CWIdeaTest
             skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
             renderModeBox.Text = "Default";
             boneBrightnessTrackbar.Value = 6;
-            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value + "%\n(Requires Re-Render)";
+            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value;
 
             if (renderModeBox.Text == "Volume")
             {
@@ -83,7 +83,10 @@ namespace CWIdeaTest
 
         private void boneBrightnessTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value + "%\n(Requires Re-Render)";
+            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value;
+            updateTopView();
+            updateFrontView();
+            updateSideView();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -530,6 +533,7 @@ namespace CWIdeaTest
                 sideViewLabel.ForeColor = Color.White;
 
                 skinOpacityLabel.ForeColor = Color.White;
+                boneBrightnessLabel.ForeColor = Color.White;
             }
             else
             {
@@ -539,6 +543,7 @@ namespace CWIdeaTest
                 sideViewLabel.ForeColor = Color.Black;
 
                 skinOpacityLabel.ForeColor = Color.Black;
+                boneBrightnessLabel.ForeColor = Color.Black;
             }
         }
 

@@ -68,37 +68,42 @@ namespace CWIdeaTest
             // 
             // topSliceTrackbar
             // 
-            this.topSliceTrackbar.Location = new System.Drawing.Point(29, 346);
+            this.topSliceTrackbar.Location = new System.Drawing.Point(92, 985);
+            this.topSliceTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.topSliceTrackbar.Name = "topSliceTrackbar";
-            this.topSliceTrackbar.Size = new System.Drawing.Size(104, 45);
+            this.topSliceTrackbar.Size = new System.Drawing.Size(329, 136);
             this.topSliceTrackbar.TabIndex = 0;
             this.topSliceTrackbar.ValueChanged += new System.EventHandler(this.topSliceTrackbar_ValueChanged);
             // 
             // frontSliceTrackbar
             // 
-            this.frontSliceTrackbar.Location = new System.Drawing.Point(365, 346);
+            this.frontSliceTrackbar.Location = new System.Drawing.Point(1156, 985);
+            this.frontSliceTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.frontSliceTrackbar.Name = "frontSliceTrackbar";
-            this.frontSliceTrackbar.Size = new System.Drawing.Size(104, 45);
+            this.frontSliceTrackbar.Size = new System.Drawing.Size(329, 136);
             this.frontSliceTrackbar.TabIndex = 1;
             this.frontSliceTrackbar.ValueChanged += new System.EventHandler(this.frontSliceTrackbar_ValueChanged);
             // 
             // sideSliceTrackbar
             // 
-            this.sideSliceTrackbar.Location = new System.Drawing.Point(705, 346);
+            this.sideSliceTrackbar.Location = new System.Drawing.Point(2233, 985);
+            this.sideSliceTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.sideSliceTrackbar.Name = "sideSliceTrackbar";
-            this.sideSliceTrackbar.Size = new System.Drawing.Size(104, 45);
+            this.sideSliceTrackbar.Size = new System.Drawing.Size(329, 136);
             this.sideSliceTrackbar.TabIndex = 2;
             this.sideSliceTrackbar.ValueChanged += new System.EventHandler(this.sideSliceTrackbar_ValueChanged);
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(48, 48);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1071, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(19, 6, 0, 6);
+            this.menuStrip1.Size = new System.Drawing.Size(3392, 72);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -107,13 +112,13 @@ namespace CWIdeaTest
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(103, 60);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(305, 66);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -123,14 +128,14 @@ namespace CWIdeaTest
             this.darkModeToolStripMenuItem,
             this.renderModeMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(124, 60);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // darkModeToolStripMenuItem
             // 
             this.darkModeToolStripMenuItem.CheckOnClick = true;
             this.darkModeToolStripMenuItem.Name = "darkModeToolStripMenuItem";
-            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(442, 66);
             this.darkModeToolStripMenuItem.Text = "Dark Mode";
             this.darkModeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.darkModeToolStripMenuItem_CheckStateChanged);
             // 
@@ -139,7 +144,7 @@ namespace CWIdeaTest
             this.renderModeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.renderModeBox});
             this.renderModeMenuItem.Name = "renderModeMenuItem";
-            this.renderModeMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.renderModeMenuItem.Size = new System.Drawing.Size(442, 66);
             this.renderModeMenuItem.Text = "Render Mode:";
             // 
             // renderModeBox
@@ -150,14 +155,15 @@ namespace CWIdeaTest
             "Depth",
             "Volume"});
             this.renderModeBox.Name = "renderModeBox";
-            this.renderModeBox.Size = new System.Drawing.Size(121, 23);
+            this.renderModeBox.Size = new System.Drawing.Size(121, 56);
             this.renderModeBox.DropDownClosed += new System.EventHandler(this.renderModeBox_DropDownClosed);
             // 
             // topSliceButton
             // 
-            this.topSliceButton.Location = new System.Drawing.Point(244, 346);
+            this.topSliceButton.Location = new System.Drawing.Point(773, 985);
+            this.topSliceButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.topSliceButton.Name = "topSliceButton";
-            this.topSliceButton.Size = new System.Drawing.Size(75, 23);
+            this.topSliceButton.Size = new System.Drawing.Size(238, 65);
             this.topSliceButton.TabIndex = 4;
             this.topSliceButton.Text = "Slice";
             this.topSliceButton.UseVisualStyleBackColor = true;
@@ -166,35 +172,39 @@ namespace CWIdeaTest
             // topView
             // 
             this.topView.Image = ((System.Drawing.Image)(resources.GetObject("topView.Image")));
-            this.topView.Location = new System.Drawing.Point(29, 55);
+            this.topView.Location = new System.Drawing.Point(92, 157);
+            this.topView.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.topView.Name = "topView";
-            this.topView.Size = new System.Drawing.Size(290, 272);
+            this.topView.Size = new System.Drawing.Size(918, 774);
             this.topView.TabIndex = 5;
             this.topView.TabStop = false;
             // 
             // frontView
             // 
             this.frontView.Image = ((System.Drawing.Image)(resources.GetObject("frontView.Image")));
-            this.frontView.Location = new System.Drawing.Point(365, 55);
+            this.frontView.Location = new System.Drawing.Point(1156, 157);
+            this.frontView.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.frontView.Name = "frontView";
-            this.frontView.Size = new System.Drawing.Size(290, 272);
+            this.frontView.Size = new System.Drawing.Size(918, 774);
             this.frontView.TabIndex = 6;
             this.frontView.TabStop = false;
             // 
             // sideView
             // 
             this.sideView.Image = ((System.Drawing.Image)(resources.GetObject("sideView.Image")));
-            this.sideView.Location = new System.Drawing.Point(705, 55);
+            this.sideView.Location = new System.Drawing.Point(2233, 157);
+            this.sideView.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.sideView.Name = "sideView";
-            this.sideView.Size = new System.Drawing.Size(290, 272);
+            this.sideView.Size = new System.Drawing.Size(918, 774);
             this.sideView.TabIndex = 7;
             this.sideView.TabStop = false;
             // 
             // frontSliceButton
             // 
-            this.frontSliceButton.Location = new System.Drawing.Point(580, 346);
+            this.frontSliceButton.Location = new System.Drawing.Point(1837, 985);
+            this.frontSliceButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.frontSliceButton.Name = "frontSliceButton";
-            this.frontSliceButton.Size = new System.Drawing.Size(75, 23);
+            this.frontSliceButton.Size = new System.Drawing.Size(238, 65);
             this.frontSliceButton.TabIndex = 8;
             this.frontSliceButton.Text = "Slice";
             this.frontSliceButton.UseVisualStyleBackColor = true;
@@ -202,9 +212,10 @@ namespace CWIdeaTest
             // 
             // sideSliceButton
             // 
-            this.sideSliceButton.Location = new System.Drawing.Point(920, 346);
+            this.sideSliceButton.Location = new System.Drawing.Point(2913, 985);
+            this.sideSliceButton.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.sideSliceButton.Name = "sideSliceButton";
-            this.sideSliceButton.Size = new System.Drawing.Size(75, 23);
+            this.sideSliceButton.Size = new System.Drawing.Size(238, 65);
             this.sideSliceButton.TabIndex = 9;
             this.sideSliceButton.Text = "Slice";
             this.sideSliceButton.UseVisualStyleBackColor = true;
@@ -213,27 +224,30 @@ namespace CWIdeaTest
             // topViewLabel
             // 
             this.topViewLabel.AutoSize = true;
-            this.topViewLabel.Location = new System.Drawing.Point(139, 351);
+            this.topViewLabel.Location = new System.Drawing.Point(440, 999);
+            this.topViewLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.topViewLabel.Name = "topViewLabel";
-            this.topViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.topViewLabel.Size = new System.Drawing.Size(241, 37);
             this.topViewLabel.TabIndex = 11;
             this.topViewLabel.Text = "Current Slice: {}";
             // 
             // frontViewLabel
             // 
             this.frontViewLabel.AutoSize = true;
-            this.frontViewLabel.Location = new System.Drawing.Point(475, 351);
+            this.frontViewLabel.Location = new System.Drawing.Point(1504, 999);
+            this.frontViewLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.frontViewLabel.Name = "frontViewLabel";
-            this.frontViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.frontViewLabel.Size = new System.Drawing.Size(241, 37);
             this.frontViewLabel.TabIndex = 12;
             this.frontViewLabel.Text = "Current Slice: {}";
             // 
             // sideViewLabel
             // 
             this.sideViewLabel.AutoSize = true;
-            this.sideViewLabel.Location = new System.Drawing.Point(815, 351);
+            this.sideViewLabel.Location = new System.Drawing.Point(2581, 999);
+            this.sideViewLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.sideViewLabel.Name = "sideViewLabel";
-            this.sideViewLabel.Size = new System.Drawing.Size(81, 13);
+            this.sideViewLabel.Size = new System.Drawing.Size(241, 37);
             this.sideViewLabel.TabIndex = 13;
             this.sideViewLabel.Text = "Current Slice: {}";
             // 
@@ -259,26 +273,30 @@ namespace CWIdeaTest
             this.panel1.Controls.Add(this.topSliceTrackbar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1071, 499);
+            this.panel1.Size = new System.Drawing.Size(3392, 1420);
             this.panel1.TabIndex = 14;
             // 
             // boneBrightnessLabel
             // 
             this.boneBrightnessLabel.AutoSize = true;
-            this.boneBrightnessLabel.Location = new System.Drawing.Point(221, 421);
+            this.boneBrightnessLabel.Location = new System.Drawing.Point(700, 1198);
+            this.boneBrightnessLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.boneBrightnessLabel.Name = "boneBrightnessLabel";
-            this.boneBrightnessLabel.Size = new System.Drawing.Size(98, 13);
+            this.boneBrightnessLabel.Size = new System.Drawing.Size(269, 37);
             this.boneBrightnessLabel.TabIndex = 17;
-            this.boneBrightnessLabel.Text = "Bone Brightness: {}";
+            this.boneBrightnessLabel.Text = "Shading Depth: {}";
             this.boneBrightnessLabel.Visible = false;
             // 
             // boneBrightnessTrackbar
             // 
-            this.boneBrightnessTrackbar.Location = new System.Drawing.Point(29, 421);
-            this.boneBrightnessTrackbar.Maximum = 100;
+            this.boneBrightnessTrackbar.Location = new System.Drawing.Point(92, 1198);
+            this.boneBrightnessTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
+            this.boneBrightnessTrackbar.Maximum = 40;
+            this.boneBrightnessTrackbar.Minimum = 1;
             this.boneBrightnessTrackbar.Name = "boneBrightnessTrackbar";
-            this.boneBrightnessTrackbar.Size = new System.Drawing.Size(191, 45);
+            this.boneBrightnessTrackbar.Size = new System.Drawing.Size(605, 136);
             this.boneBrightnessTrackbar.TabIndex = 16;
             this.boneBrightnessTrackbar.Value = 12;
             this.boneBrightnessTrackbar.Visible = false;
@@ -287,19 +305,21 @@ namespace CWIdeaTest
             // skinOpacityLabel
             // 
             this.skinOpacityLabel.AutoSize = true;
-            this.skinOpacityLabel.Location = new System.Drawing.Point(226, 421);
+            this.skinOpacityLabel.Location = new System.Drawing.Point(716, 1198);
+            this.skinOpacityLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.skinOpacityLabel.Name = "skinOpacityLabel";
-            this.skinOpacityLabel.Size = new System.Drawing.Size(81, 13);
+            this.skinOpacityLabel.Size = new System.Drawing.Size(236, 37);
             this.skinOpacityLabel.TabIndex = 15;
             this.skinOpacityLabel.Text = "Skin Opacity: {}";
             this.skinOpacityLabel.Visible = false;
             // 
             // skinOpacityTrackbar
             // 
-            this.skinOpacityTrackbar.Location = new System.Drawing.Point(29, 421);
+            this.skinOpacityTrackbar.Location = new System.Drawing.Point(92, 1198);
+            this.skinOpacityTrackbar.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.skinOpacityTrackbar.Maximum = 100;
             this.skinOpacityTrackbar.Name = "skinOpacityTrackbar";
-            this.skinOpacityTrackbar.Size = new System.Drawing.Size(191, 45);
+            this.skinOpacityTrackbar.Size = new System.Drawing.Size(605, 136);
             this.skinOpacityTrackbar.TabIndex = 14;
             this.skinOpacityTrackbar.Value = 12;
             this.skinOpacityTrackbar.Visible = false;
@@ -308,12 +328,13 @@ namespace CWIdeaTest
             // Test
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 499);
+            this.ClientSize = new System.Drawing.Size(3392, 1420);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.Name = "Test";
             this.Text = "CT Head Reader";
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).EndInit();
