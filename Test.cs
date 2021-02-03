@@ -223,10 +223,10 @@ namespace CWIdeaTest
                 {
                     for (i=0; i < CT_x_axis; i++)
                     {
+                        //Reads voxel data and reverses endianness
                         b1 = ((int)reader.ReadByte()) & 0xff;
                         b2 = ((int)reader.ReadByte()) & 0xff;
                         read = (short)((b2 << 8) | b1);
-                        //read = (short)reader.ReadByte();
                         if (read < min) min = read;
                         if (read > max) max = read;
                         cthead[k, j, i] = read;
@@ -248,12 +248,6 @@ namespace CWIdeaTest
             {
                 for (int i = 0; i < w; i++)
                 {
-                    //at this point (i,j) is a single pixel in the image
-                    //here you would need to do something to (i,j) if the image size
-                    //does not match the slice size (e.g. during an image resizing operation
-                    //If you don't do this, your j,i could be outside the array bounds
-                    //In the framework, the image is 256x256 and the data set slices are 256x256
-                    //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
                     Color currentCol = getColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
@@ -425,7 +419,6 @@ namespace CWIdeaTest
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
-            //Console.WriteLine("Updated View");
             return returnScanVolume;
         }
 
@@ -596,7 +589,6 @@ namespace CWIdeaTest
                 }
                 if (datum >= -300 && datum < 50)
                 {
-                    //return Color.FromArgb(skin_opacity, 255, (int)(0.79 * 255), (int)(0.6 * 255));
                     return Color.FromArgb(skin_opacity, 255, 201, 153);
                 }
                 if (datum < 300 && datum >= 50)
