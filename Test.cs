@@ -19,8 +19,6 @@ namespace CWIdeaTest
         int CT_y_axis = 256;
         int CT_z_axis = 113;
 
-        public int depthBoneBrightness = 6;
-
         public int skin_opacity;
 
         Bitmap topImage;
@@ -48,8 +46,11 @@ namespace CWIdeaTest
 
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
             skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
+            renderModeBox.Text = "Default";
+            boneBrightnessTrackbar.Value = 6;
+            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value + "%\n(Requires Re-Render)";
 
-            if (volumeRenderingMenuItem.Checked)
+            if (renderModeBox.Text == "Volume")
             {
                 skinOpacityTrackbar.Visible = true;
                 skinOpacityLabel.Visible = true;
@@ -80,6 +81,10 @@ namespace CWIdeaTest
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
         }
 
+        private void boneBrightnessTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value + "%\n(Requires Re-Render)";
+        }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -104,17 +109,23 @@ namespace CWIdeaTest
         private void updateTopView()
         {
             short sliceValue = (short) topSliceTrackbar.Value;
-            if (volumeRenderingMenuItem.Checked)
+
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
             {
-                topImage = TopDownVolume(sliceValue);
-            }
-            else if (depthRenderingMenuItem.Checked)
-            {
-                topImage = TopDownDepth(sliceValue);
-            }
-            else
-            {
-                topImage = TopDownSlice(sliceValue);
+                case "Default":
+                    topImage = TopDownSlice(sliceValue);
+                    break;
+                case "Depth":
+                    topImage = TopDownDepth(sliceValue);
+                    break;
+                case "Volume":
+                    topImage = TopDownVolume(sliceValue);
+                    break;
+                default:
+                    topImage = TopDownSlice(sliceValue);
+                    break;
+
             }
             topView.Image = topImage;
             topView.SizeMode = PictureBoxSizeMode.Zoom;
@@ -123,21 +134,25 @@ namespace CWIdeaTest
         private void updateFrontView()
         {
             short sliceValue = (short)frontSliceTrackbar.Value;
-            if (volumeRenderingMenuItem.Checked)
+
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
             {
-                frontImage = FrontInVolume(sliceValue);
-            }
-            else {
-                if (depthRenderingMenuItem.Checked)
-                {
-                    frontImage = FrontInDepth(sliceValue);
-                }
-                else
-                {
+                case "Default":
                     frontImage = FrontInSlice(sliceValue);
-                }
+                    break;
+                case "Depth":
+                    frontImage = FrontInDepth(sliceValue);
+                    break;
+                case "Volume":
+                    frontImage = FrontInVolume(sliceValue);
+                    break;
+                default:
+                    frontImage = FrontInSlice(sliceValue);
+                    break;
+
             }
-            
+
             frontView.Image = frontImage;
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
         }
@@ -145,13 +160,22 @@ namespace CWIdeaTest
         private void updateSideView()
         {
             short sliceValue = (short) sideSliceTrackbar.Value;
-            if (volumeRenderingMenuItem.Checked)
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
             {
-                sideImage = SideOnVolume(sliceValue);
-            }
-            else
-            {
-                sideImage = SideOnSlice(sliceValue);
+                case "Default":
+                    sideImage = SideOnSlice(sliceValue);
+                    break;
+                case "Depth":
+                    sideImage = SideOnDepth(sliceValue);
+                    break;
+                case "Volume":
+                    sideImage = SideOnVolume(sliceValue);
+                    break;
+                default:
+                    sideImage = SideOnSlice(sliceValue);
+                    break;
+
             }
             sideView.Image = sideImage;
             sideView.SizeMode = PictureBoxSizeMode.Zoom;
@@ -228,7 +252,7 @@ namespace CWIdeaTest
                     //In the framework, the image is 256x256 and the data set slices are 256x256
                     //so I don't do anything - this also leaves you something to do for the assignment
                     datum = cthead[sliceNumber, j, i];
-                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
+                    Color currentCol = getColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -236,13 +260,11 @@ namespace CWIdeaTest
             return returnScanSlice;
         }
 
-        //Depth-based render
         public Bitmap TopDownDepth(short sliceNumber)
         {
             int w = CT_x_axis;
             int h = CT_y_axis;
 
-            //double datum;
             Bitmap returnScanVolume = new Bitmap(w, h);
 
             for (int j = 0; j < h; j++)
@@ -252,7 +274,7 @@ namespace CWIdeaTest
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
                     bool bone = false;
                     int firstIntersectDepth = 255;
-                    for (int k = CT_z_axis - 1; k > sliceNumber; k--)
+                    for (int k = sliceNumber; k < CT_z_axis; k++)
                     {
                         double voxelVal = cthead[k, j, i];
                         if (voxelVal > 400)
@@ -260,7 +282,7 @@ namespace CWIdeaTest
                             bone = true;
                             if (k < firstIntersectDepth)
                             {
-                                firstIntersectDepth = Math.Max(2, k / depthBoneBrightness);
+                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
                             }
                         }
                     }
@@ -268,7 +290,6 @@ namespace CWIdeaTest
                     {
                         pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
                     }
-                    //Console.WriteLine(transparency);
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
@@ -324,7 +345,7 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, sliceNumber, i];
-                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
+                    Color currentCol = getColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -345,7 +366,7 @@ namespace CWIdeaTest
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
                     bool bone = false;
                     int firstIntersectDepth = 255;
-                    for (int k = 0; k < CT_y_axis; k++)
+                    for (int k = sliceNumber; k < CT_y_axis; k++)
                     {
                         double voxelVal = cthead[j, k, i];
                         if (voxelVal > 400)
@@ -353,7 +374,7 @@ namespace CWIdeaTest
                             bone = true;
                             if (k < firstIntersectDepth)
                             {
-                                firstIntersectDepth = Math.Max(2, k / depthBoneBrightness);
+                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
                             }
                         }
                     }
@@ -455,12 +476,48 @@ namespace CWIdeaTest
                 for (int i = 0; i < w; i++)
                 {
                     datum = cthead[j, i, sliceNumber];
-                    Color currentCol = getColour(datum, volumeRenderingMenuItem.Checked);
+                    Color currentCol = getColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
 
             return returnScanSlice;
+        }
+
+        public Bitmap SideOnDepth(short sliceNumber)
+        {
+            int w = CT_y_axis;
+            int h = CT_z_axis;
+
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    bool bone = false;
+                    int firstIntersectDepth = 255;
+                    for (int k = sliceNumber; k < CT_x_axis; k++)
+                    {
+                        double voxelVal = cthead[j, i, k];
+                        if (voxelVal > 400)
+                        {
+                            bone = true;
+                            if (k < firstIntersectDepth)
+                            {
+                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
+                            }
+                        }
+                    }
+                    if (bone == true)
+                    {
+                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
+                    }
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+            return returnScanVolume;
         }
 
         private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
@@ -491,21 +548,38 @@ namespace CWIdeaTest
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
         }
 
-        private void volumeRenderingMenuItem_CheckedChanged(object sender, EventArgs e)
+        private void renderModeBox_DropDownClosed(object sender, EventArgs e)
         {
-            if (volumeRenderingMenuItem.Checked)
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
             {
-                skinOpacityTrackbar.Visible = true;
-                skinOpacityLabel.Visible = true;
-            }
-            else
-            {
-                skinOpacityTrackbar.Visible = false;
-                skinOpacityLabel.Visible = false;
+                case "Default":
+                    skinOpacityTrackbar.Visible = false;
+                    skinOpacityLabel.Visible = false;
+                    boneBrightnessTrackbar.Visible = false;
+                    boneBrightnessLabel.Visible = false;
+                    break;
+                case "Depth":
+                    skinOpacityTrackbar.Visible = false;
+                    skinOpacityLabel.Visible = false;
+                    boneBrightnessTrackbar.Visible = true;
+                    boneBrightnessLabel.Visible = true;
+                    break;
+                case "Volume":
+                    skinOpacityTrackbar.Visible = true;
+                    skinOpacityLabel.Visible = true;
+                    boneBrightnessTrackbar.Visible = false;
+                    boneBrightnessLabel.Visible = false;
+                    break;
+                default:
+                    skinOpacityTrackbar.Visible = false;
+                    skinOpacityLabel.Visible = false;
+                    boneBrightnessTrackbar.Visible = false;
+                    boneBrightnessLabel.Visible = false;
+                    break;
+
             }
         }
-
-
 
         private Color getColour(double datum, bool volumeRender)
         {

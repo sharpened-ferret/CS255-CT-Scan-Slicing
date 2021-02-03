@@ -37,9 +37,9 @@ namespace CWIdeaTest
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.volumeRenderingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.depthRenderingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renderModeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renderModeBox = new System.Windows.Forms.ToolStripComboBox();
             this.topSliceButton = new System.Windows.Forms.Button();
             this.topView = new System.Windows.Forms.PictureBox();
             this.frontView = new System.Windows.Forms.PictureBox();
@@ -50,6 +50,8 @@ namespace CWIdeaTest
             this.frontViewLabel = new System.Windows.Forms.Label();
             this.sideViewLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.boneBrightnessLabel = new System.Windows.Forms.Label();
+            this.boneBrightnessTrackbar = new System.Windows.Forms.TrackBar();
             this.skinOpacityLabel = new System.Windows.Forms.Label();
             this.skinOpacityTrackbar = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).BeginInit();
@@ -60,6 +62,7 @@ namespace CWIdeaTest
             ((System.ComponentModel.ISupportInitialize)(this.frontView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideView)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.boneBrightnessTrackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinOpacityTrackbar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,36 +120,38 @@ namespace CWIdeaTest
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.volumeRenderingMenuItem,
-            this.depthRenderingMenuItem,
-            this.darkModeToolStripMenuItem});
+            this.darkModeToolStripMenuItem,
+            this.renderModeMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
-            // 
-            // volumeRenderingMenuItem
-            // 
-            this.volumeRenderingMenuItem.Checked = true;
-            this.volumeRenderingMenuItem.CheckOnClick = true;
-            this.volumeRenderingMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.volumeRenderingMenuItem.Name = "volumeRenderingMenuItem";
-            this.volumeRenderingMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.volumeRenderingMenuItem.Text = "Volume Rendering";
-            this.volumeRenderingMenuItem.CheckedChanged += new System.EventHandler(this.volumeRenderingMenuItem_CheckedChanged);
-            // 
-            // depthRenderingMenuItem
-            // 
-            this.depthRenderingMenuItem.Name = "depthRenderingMenuItem";
-            this.depthRenderingMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.depthRenderingMenuItem.Text = "Depth Rendering";
             // 
             // darkModeToolStripMenuItem
             // 
             this.darkModeToolStripMenuItem.CheckOnClick = true;
             this.darkModeToolStripMenuItem.Name = "darkModeToolStripMenuItem";
-            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.darkModeToolStripMenuItem.Text = "Dark Mode";
             this.darkModeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.darkModeToolStripMenuItem_CheckStateChanged);
+            // 
+            // renderModeMenuItem
+            // 
+            this.renderModeMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.renderModeBox});
+            this.renderModeMenuItem.Name = "renderModeMenuItem";
+            this.renderModeMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.renderModeMenuItem.Text = "Render Mode:";
+            // 
+            // renderModeBox
+            // 
+            this.renderModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.renderModeBox.Items.AddRange(new object[] {
+            "Default",
+            "Depth",
+            "Volume"});
+            this.renderModeBox.Name = "renderModeBox";
+            this.renderModeBox.Size = new System.Drawing.Size(121, 23);
+            this.renderModeBox.DropDownClosed += new System.EventHandler(this.renderModeBox_DropDownClosed);
             // 
             // topSliceButton
             // 
@@ -236,6 +241,8 @@ namespace CWIdeaTest
             // 
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.boneBrightnessLabel);
+            this.panel1.Controls.Add(this.boneBrightnessTrackbar);
             this.panel1.Controls.Add(this.skinOpacityLabel);
             this.panel1.Controls.Add(this.skinOpacityTrackbar);
             this.panel1.Controls.Add(this.sideSliceButton);
@@ -255,6 +262,27 @@ namespace CWIdeaTest
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1071, 499);
             this.panel1.TabIndex = 14;
+            // 
+            // boneBrightnessLabel
+            // 
+            this.boneBrightnessLabel.AutoSize = true;
+            this.boneBrightnessLabel.Location = new System.Drawing.Point(221, 421);
+            this.boneBrightnessLabel.Name = "boneBrightnessLabel";
+            this.boneBrightnessLabel.Size = new System.Drawing.Size(98, 13);
+            this.boneBrightnessLabel.TabIndex = 17;
+            this.boneBrightnessLabel.Text = "Bone Brightness: {}";
+            this.boneBrightnessLabel.Visible = false;
+            // 
+            // boneBrightnessTrackbar
+            // 
+            this.boneBrightnessTrackbar.Location = new System.Drawing.Point(29, 421);
+            this.boneBrightnessTrackbar.Maximum = 100;
+            this.boneBrightnessTrackbar.Name = "boneBrightnessTrackbar";
+            this.boneBrightnessTrackbar.Size = new System.Drawing.Size(191, 45);
+            this.boneBrightnessTrackbar.TabIndex = 16;
+            this.boneBrightnessTrackbar.Value = 12;
+            this.boneBrightnessTrackbar.Visible = false;
+            this.boneBrightnessTrackbar.ValueChanged += new System.EventHandler(this.boneBrightnessTrackbar_ValueChanged);
             // 
             // skinOpacityLabel
             // 
@@ -298,6 +326,7 @@ namespace CWIdeaTest
             ((System.ComponentModel.ISupportInitialize)(this.sideView)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.boneBrightnessTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinOpacityTrackbar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -321,12 +350,14 @@ namespace CWIdeaTest
         private System.Windows.Forms.Label frontViewLabel;
         private System.Windows.Forms.Label sideViewLabel;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem volumeRenderingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkModeToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label skinOpacityLabel;
         private System.Windows.Forms.TrackBar skinOpacityTrackbar;
-        private System.Windows.Forms.ToolStripMenuItem depthRenderingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem renderModeMenuItem;
+        private System.Windows.Forms.ToolStripComboBox renderModeBox;
+        private System.Windows.Forms.TrackBar boneBrightnessTrackbar;
+        private System.Windows.Forms.Label boneBrightnessLabel;
     }
 }
 
