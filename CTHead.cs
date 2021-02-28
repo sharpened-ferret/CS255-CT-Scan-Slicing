@@ -15,9 +15,9 @@ namespace CWCTHead
     {
         short[,,] cthead;
         public short min, max; //min/max value in the 3D volume data set
-        int CT_x_axis = 256;
-        int CT_y_axis = 256;
-        int CT_z_axis = 113;
+        int CT_x_axis;
+        int CT_y_axis;
+        int CT_z_axis;
 
         public int skin_opacity; //stores the skin weighting for volume rendering
 
@@ -25,17 +25,15 @@ namespace CWCTHead
         Bitmap frontImage;
         Bitmap sideImage;
 
-
-        public CTHead()
+        //Creates a new CTHead object
+        public CTHead(String filename, int x, int y, int z)
         {
+            CT_x_axis = x;
+            CT_y_axis = y;
+            CT_z_axis = z;
+
             InitializeComponent();
-            ReadData();
-
-            int Top_width = CT_x_axis;
-            int Top_height = CT_y_axis;
-
-            int Front_width = CT_x_axis;
-            int Front_height = CT_z_axis;
+            ReadData(filename);
 
             topSliceTrackbar.Maximum = CT_z_axis - 1;
             frontSliceTrackbar.Maximum = CT_y_axis - 1;
@@ -62,18 +60,21 @@ namespace CWCTHead
             }
         }
 
+        //Updates top image and trackbar value label
         private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             updateTopView();
             topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
         }
 
+        //Updates front image and trackbar value label
         private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             updateFrontView();
             frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
         }
 
+        //Updates side image and trackbar value label
         private void sideSliceTrackbar_ValueChanged(object sender, EventArgs e)
         {
             updateSideView();
@@ -81,6 +82,7 @@ namespace CWCTHead
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
         }
 
+        //Updates bone brightness and trackbar value label (only visable when in depth render mode)
         private void boneBrightnessTrackbar_ValueChanged(object sender, EventArgs e)
         {
             boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value;
@@ -94,21 +96,25 @@ namespace CWCTHead
             
         }
 
+        //Updates top image
         private void topSliceButton_Click(object sender, EventArgs e)
         {
             updateTopView();
         }
 
+        //Updates front image
         private void frontSliceButton_Click(object sender, EventArgs e)
         {
             updateFrontView();
         }
+
+        //Updates side image
         private void sideSliceButton_Click(object sender, EventArgs e)
         {
             updateSideView();
         }
 
-
+        //Renders top image based on current render settings
         private void updateTopView()
         {
             short sliceValue = (short) topSliceTrackbar.Value;
@@ -134,6 +140,7 @@ namespace CWCTHead
             topView.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
+        //Renders front image based on current render settings
         private void updateFrontView()
         {
             short sliceValue = (short)frontSliceTrackbar.Value;
@@ -160,6 +167,7 @@ namespace CWCTHead
             frontView.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
+        //Renders side image based on current render settings
         private void updateSideView()
         {
             short sliceValue = (short) sideSliceTrackbar.Value;
@@ -184,9 +192,10 @@ namespace CWCTHead
             sideView.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-        public void ReadData()
+        //Reads data from a CT data file
+        private void ReadData(String filename)
         {
-            BinaryReader reader = new BinaryReader(File.Open("CThead", FileMode.Open));
+            BinaryReader reader = new BinaryReader(File.Open(filename, FileMode.Open));
 
             int i, j, k;
 
@@ -233,7 +242,7 @@ namespace CWCTHead
                     }
                 }
             }
-            Console.WriteLine(min + " " + max);
+            Console.WriteLine("Minimum CT Value: " + min + ", Maximum CT Value: " + max);
         }
 
         public Bitmap TopDownSlice(short sliceNumber)

@@ -268,9 +268,9 @@ namespace CWCTHead
             this.boneBrightnessLabel.AutoSize = true;
             this.boneBrightnessLabel.Location = new System.Drawing.Point(221, 421);
             this.boneBrightnessLabel.Name = "boneBrightnessLabel";
-            this.boneBrightnessLabel.Size = new System.Drawing.Size(92, 13);
+            this.boneBrightnessLabel.Size = new System.Drawing.Size(98, 13);
             this.boneBrightnessLabel.TabIndex = 17;
-            this.boneBrightnessLabel.Text = "Shading Depth: {}";
+            this.boneBrightnessLabel.Text = "Bone Brightness: {}";
             this.boneBrightnessLabel.Visible = false;
             // 
             // boneBrightnessTrackbar
@@ -306,7 +306,7 @@ namespace CWCTHead
             this.skinOpacityTrackbar.Visible = false;
             this.skinOpacityTrackbar.ValueChanged += new System.EventHandler(this.skinOpacityTrackbar_ValueChanged);
             // 
-            // Test
+            // CTHead
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -315,7 +315,7 @@ namespace CWCTHead
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Test";
+            this.Name = "CTHead";
             this.Text = "CT Head Reader";
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).EndInit();

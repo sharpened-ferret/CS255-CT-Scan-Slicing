@@ -16,7 +16,7 @@ namespace CWCTHead
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CTHead());
+            Application.Run(new CTHead("CTHead", 256, 256, 113));
         }
     }
 }
