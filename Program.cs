@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CWIdeaTest
+namespace CWCTHead
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace CWIdeaTest
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Test());
+            Application.Run(new CTHead());
         }
     }
 }

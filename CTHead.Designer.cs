@@ -1,7 +1,7 @@
 ﻿
-namespace CWIdeaTest
+namespace CWCTHead
 {
-    partial class Test
+    partial class CTHead
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace CWIdeaTest
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Test));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CTHead));
             this.topSliceTrackbar = new System.Windows.Forms.TrackBar();
             this.frontSliceTrackbar = new System.Windows.Forms.TrackBar();
             this.sideSliceTrackbar = new System.Windows.Forms.TrackBar();

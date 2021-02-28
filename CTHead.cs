@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace CWIdeaTest
+namespace CWCTHead
 {
-    public partial class Test : Form
+    public partial class CTHead : Form
     {
         short[,,] cthead;
         public short min, max; //min/max value in the 3D volume data set
@@ -19,14 +19,14 @@ namespace CWIdeaTest
         int CT_y_axis = 256;
         int CT_z_axis = 113;
 
-        public int skin_opacity;
+        public int skin_opacity; //stores the skin weighting for volume rendering
 
         Bitmap topImage;
         Bitmap frontImage;
         Bitmap sideImage;
 
 
-        public Test()
+        public CTHead()
         {
             InitializeComponent();
             ReadData();
@@ -530,7 +530,7 @@ namespace CWIdeaTest
             }
             else
             {
-                panel1.BackColor = Test.DefaultBackColor;
+                panel1.BackColor = CTHead.DefaultBackColor;
                 topViewLabel.ForeColor = Color.Black;
                 frontViewLabel.ForeColor = Color.Black;
                 sideViewLabel.ForeColor = Color.Black;
