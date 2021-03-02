@@ -154,7 +154,7 @@ namespace CWCTHead
                     frontImage = Volume(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
                     break;
                 case "Gradient":
-                    frontImage = FrontInGradient(sliceValue);
+                    frontImage = Gradient(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
                     break;
                 default:
                     frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
@@ -369,26 +369,39 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
-        public Bitmap FrontInGradient(short sliceNumber)
+        private Bitmap Gradient(short sliceNumber, int width, int height, int depth, View view)
         {
-            int w = CT_x_axis;
-            int h = CT_z_axis;
-            Bitmap returnScanVolume = new Bitmap(w, h);
+            Bitmap returnScanVolume = new Bitmap(width, height);
 
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < height; j++)
             {
-                for (int i = 0; i < w; i++)
+                for (int i = 0; i < width; i++)
                 {
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    int firstIntersectDepth = 255;
-                    for (int k = sliceNumber; k < CT_y_axis; k++)
+                    int firstIntersectDepth = depth;
+                    for (int k = sliceNumber; k < depth; k++)
                     {
-                        double voxelVal = cthead[j, k, i];
+                        double voxelVal;
+                        switch (view)
+                        {
+                            case View.Top:
+                                voxelVal = cthead[k, j, i];
+                                break;
+                            case View.Side:
+                                voxelVal = cthead[j, i, k];
+                                break;
+                            case View.Front:
+                                voxelVal = cthead[j, k, i];
+                                break;
+                            default:
+                                voxelVal = cthead[0, 0, 0];
+                                break;
+                        }
                         if (voxelVal > 400)
                         {
                             if (k < firstIntersectDepth)
                             {
-                                float multiplier = (float)k / 255;
+                                float multiplier = (float)k / depth;
                                 int brightness = 255 - (int)(255 * multiplier);
                                 pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
                                 firstIntersectDepth = k;
@@ -398,7 +411,6 @@ namespace CWCTHead
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
             }
-
             return returnScanVolume;
         }
 
