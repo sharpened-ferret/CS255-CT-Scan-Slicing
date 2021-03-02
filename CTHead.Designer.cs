@@ -63,7 +63,7 @@ namespace CWCTHead
             // 
             // topSliceTrackbar
             // 
-            this.topSliceTrackbar.Location = new System.Drawing.Point(29, 346);
+            this.topSliceTrackbar.Location = new System.Drawing.Point(42, 511);
             this.topSliceTrackbar.Name = "topSliceTrackbar";
             this.topSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.topSliceTrackbar.TabIndex = 0;
@@ -71,7 +71,7 @@ namespace CWCTHead
             // 
             // frontSliceTrackbar
             // 
-            this.frontSliceTrackbar.Location = new System.Drawing.Point(365, 346);
+            this.frontSliceTrackbar.Location = new System.Drawing.Point(521, 516);
             this.frontSliceTrackbar.Name = "frontSliceTrackbar";
             this.frontSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.frontSliceTrackbar.TabIndex = 1;
@@ -79,7 +79,7 @@ namespace CWCTHead
             // 
             // sideSliceTrackbar
             // 
-            this.sideSliceTrackbar.Location = new System.Drawing.Point(705, 346);
+            this.sideSliceTrackbar.Location = new System.Drawing.Point(1009, 511);
             this.sideSliceTrackbar.Name = "sideSliceTrackbar";
             this.sideSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.sideSliceTrackbar.TabIndex = 2;
@@ -92,7 +92,7 @@ namespace CWCTHead
             this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1209, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1555, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -134,7 +134,7 @@ namespace CWCTHead
             // 
             // topSliceButton
             // 
-            this.topSliceButton.Location = new System.Drawing.Point(244, 346);
+            this.topSliceButton.Location = new System.Drawing.Point(257, 511);
             this.topSliceButton.Name = "topSliceButton";
             this.topSliceButton.Size = new System.Drawing.Size(75, 23);
             this.topSliceButton.TabIndex = 4;
@@ -145,33 +145,33 @@ namespace CWCTHead
             // topView
             // 
             this.topView.Image = ((System.Drawing.Image)(resources.GetObject("topView.Image")));
-            this.topView.Location = new System.Drawing.Point(29, 55);
+            this.topView.Location = new System.Drawing.Point(42, 50);
             this.topView.Name = "topView";
-            this.topView.Size = new System.Drawing.Size(290, 272);
+            this.topView.Size = new System.Drawing.Size(427, 396);
             this.topView.TabIndex = 5;
             this.topView.TabStop = false;
             // 
             // frontView
             // 
             this.frontView.Image = ((System.Drawing.Image)(resources.GetObject("frontView.Image")));
-            this.frontView.Location = new System.Drawing.Point(365, 55);
+            this.frontView.Location = new System.Drawing.Point(521, 50);
             this.frontView.Name = "frontView";
-            this.frontView.Size = new System.Drawing.Size(290, 272);
+            this.frontView.Size = new System.Drawing.Size(427, 396);
             this.frontView.TabIndex = 6;
             this.frontView.TabStop = false;
             // 
             // sideView
             // 
             this.sideView.Image = ((System.Drawing.Image)(resources.GetObject("sideView.Image")));
-            this.sideView.Location = new System.Drawing.Point(705, 55);
+            this.sideView.Location = new System.Drawing.Point(1009, 50);
             this.sideView.Name = "sideView";
-            this.sideView.Size = new System.Drawing.Size(290, 272);
+            this.sideView.Size = new System.Drawing.Size(427, 396);
             this.sideView.TabIndex = 7;
             this.sideView.TabStop = false;
             // 
             // frontSliceButton
             // 
-            this.frontSliceButton.Location = new System.Drawing.Point(580, 346);
+            this.frontSliceButton.Location = new System.Drawing.Point(736, 516);
             this.frontSliceButton.Name = "frontSliceButton";
             this.frontSliceButton.Size = new System.Drawing.Size(75, 23);
             this.frontSliceButton.TabIndex = 8;
@@ -181,7 +181,7 @@ namespace CWCTHead
             // 
             // sideSliceButton
             // 
-            this.sideSliceButton.Location = new System.Drawing.Point(920, 346);
+            this.sideSliceButton.Location = new System.Drawing.Point(1224, 511);
             this.sideSliceButton.Name = "sideSliceButton";
             this.sideSliceButton.Size = new System.Drawing.Size(75, 23);
             this.sideSliceButton.TabIndex = 9;
@@ -192,7 +192,7 @@ namespace CWCTHead
             // topViewLabel
             // 
             this.topViewLabel.AutoSize = true;
-            this.topViewLabel.Location = new System.Drawing.Point(139, 351);
+            this.topViewLabel.Location = new System.Drawing.Point(152, 516);
             this.topViewLabel.Name = "topViewLabel";
             this.topViewLabel.Size = new System.Drawing.Size(81, 13);
             this.topViewLabel.TabIndex = 11;
@@ -201,7 +201,7 @@ namespace CWCTHead
             // frontViewLabel
             // 
             this.frontViewLabel.AutoSize = true;
-            this.frontViewLabel.Location = new System.Drawing.Point(475, 351);
+            this.frontViewLabel.Location = new System.Drawing.Point(631, 521);
             this.frontViewLabel.Name = "frontViewLabel";
             this.frontViewLabel.Size = new System.Drawing.Size(81, 13);
             this.frontViewLabel.TabIndex = 12;
@@ -210,7 +210,7 @@ namespace CWCTHead
             // sideViewLabel
             // 
             this.sideViewLabel.AutoSize = true;
-            this.sideViewLabel.Location = new System.Drawing.Point(815, 351);
+            this.sideViewLabel.Location = new System.Drawing.Point(1119, 516);
             this.sideViewLabel.Name = "sideViewLabel";
             this.sideViewLabel.Size = new System.Drawing.Size(81, 13);
             this.sideViewLabel.TabIndex = 13;
@@ -237,13 +237,13 @@ namespace CWCTHead
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1209, 503);
+            this.panel1.Size = new System.Drawing.Size(1555, 751);
             this.panel1.TabIndex = 14;
             // 
             // skinOpacityLabel
             // 
             this.skinOpacityLabel.AutoSize = true;
-            this.skinOpacityLabel.Location = new System.Drawing.Point(226, 421);
+            this.skinOpacityLabel.Location = new System.Drawing.Point(226, 614);
             this.skinOpacityLabel.Name = "skinOpacityLabel";
             this.skinOpacityLabel.Size = new System.Drawing.Size(81, 13);
             this.skinOpacityLabel.TabIndex = 15;
@@ -252,7 +252,7 @@ namespace CWCTHead
             // 
             // skinOpacityTrackbar
             // 
-            this.skinOpacityTrackbar.Location = new System.Drawing.Point(29, 421);
+            this.skinOpacityTrackbar.Location = new System.Drawing.Point(29, 614);
             this.skinOpacityTrackbar.Maximum = 100;
             this.skinOpacityTrackbar.Name = "skinOpacityTrackbar";
             this.skinOpacityTrackbar.Size = new System.Drawing.Size(191, 45);
@@ -266,12 +266,14 @@ namespace CWCTHead
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1209, 503);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1555, 751);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "CTHead";
             this.Text = "CT Head Reader";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.topSliceTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.frontSliceTrackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sideSliceTrackbar)).EndInit();
