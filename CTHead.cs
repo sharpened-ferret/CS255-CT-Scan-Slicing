@@ -13,6 +13,7 @@ namespace CWCTHead
 {
     public partial class CTHead : Form
     {
+        //Enumerates values for view direction
         enum View {
             Side,
             Front,
@@ -21,7 +22,10 @@ namespace CWCTHead
 
 
         short[,,] cthead;
+
         public short min, max; //min/max value in the 3D volume data set
+
+        //Store the directional sizes of the data set
         int CT_x_axis;
         int CT_y_axis;
         int CT_z_axis;
@@ -244,6 +248,7 @@ namespace CWCTHead
             Console.WriteLine("Minimum CT Value: " + min + ", Maximum CT Value: " + max);
         }
 
+        //Calculates a single-layer slice through the data set
         private Bitmap Slice(short sliceNumber, int width, int height, View view)
         {
             double datum;
@@ -276,6 +281,7 @@ namespace CWCTHead
             return returnScanSlice;
         }
 
+        //Calculates a depth view through the data set
         private Bitmap Depth(short sliceNumber, int width, int height, int depth, View view)
         {
             Bitmap returnScanVolume = new Bitmap(width, height);
@@ -321,6 +327,7 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
+        //Calculates a volume view through the data set
         private Bitmap Volume(short sliceNumber, int width, int height, int depth, View view)
         {
             Bitmap returnScanVolume = new Bitmap(width, height);
@@ -369,6 +376,7 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
+        //Calculates a gradient view through the data set
         private Bitmap Gradient(short sliceNumber, int width, int height, int depth, View view)
         {
             Bitmap returnScanVolume = new Bitmap(width, height);
@@ -414,6 +422,7 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
+        //Updates UI elements when dark mode is toggled
         private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (darkModeToolStripMenuItem.Checked)
@@ -436,12 +445,14 @@ namespace CWCTHead
             }
         }
 
+        //Controls the skin opacity (only visible in volume render mode)
         private void skinOpacityTrackbar_ValueChanged(object sender, EventArgs e)
         {
             skin_opacity = (int) (skinOpacityTrackbar.Value * 255) / 100;
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
         }
 
+        //Updates the UI elements when a new render mode is selected
         private void renderModeBox_DropDownClosed(object sender, EventArgs e)
         {
             string renderMode = renderModeBox.Text;
@@ -467,6 +478,7 @@ namespace CWCTHead
             }
         }
 
+        //Calculates colour values based on the transfer functions
         private Color getColour(double datum, bool volumeRender)
         {
             if (volumeRender)
