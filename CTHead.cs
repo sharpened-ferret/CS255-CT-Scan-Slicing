@@ -45,8 +45,6 @@ namespace CWCTHead
             skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
             skin_opacity = (skinOpacityTrackbar.Value * 255) / 100;
             renderModeBox.Text = "Default";
-            boneBrightnessTrackbar.Value = 6;
-            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value;
 
             if (renderModeBox.Text == "Volume")
             {
@@ -80,15 +78,6 @@ namespace CWCTHead
             updateSideView();
 
             sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
-        }
-
-        //Updates bone brightness and trackbar value label (only visable when in depth render mode)
-        private void boneBrightnessTrackbar_ValueChanged(object sender, EventArgs e)
-        {
-            boneBrightnessLabel.Text = "Bone Brightness: " + boneBrightnessTrackbar.Value;
-            updateTopView();
-            updateFrontView();
-            updateSideView();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -156,6 +145,9 @@ namespace CWCTHead
                     break;
                 case "Volume":
                     frontImage = FrontInVolume(sliceValue);
+                    break;
+                case "Gradient":
+                    frontImage = FrontInGradient(sliceValue);
                     break;
                 default:
                     frontImage = FrontInSlice(sliceValue);
@@ -278,23 +270,20 @@ namespace CWCTHead
                 for (int i = 0; i < w; i++)
                 {
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    bool bone = false;
-                    int firstIntersectDepth = 255;
+                    int firstIntersectDepth = 113;
                     for (int k = sliceNumber; k < CT_z_axis; k++)
                     {
                         double voxelVal = cthead[k, j, i];
                         if (voxelVal > 400)
                         {
-                            bone = true;
                             if (k < firstIntersectDepth)
                             {
-                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
+                                float multiplier = (float)k / 113;
+                                int brightness = 255 - (int)(255 * multiplier);
+                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
+                                firstIntersectDepth = k;
                             }
                         }
-                    }
-                    if (bone == true)
-                    {
-                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
                     }
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
@@ -370,23 +359,53 @@ namespace CWCTHead
                 for (int i = 0; i < w; i++)
                 {
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    bool bone = false;
                     int firstIntersectDepth = 255;
                     for (int k = sliceNumber; k < CT_y_axis; k++)
                     {
                         double voxelVal = cthead[j, k, i];
                         if (voxelVal > 400)
                         {
-                            bone = true;
                             if (k < firstIntersectDepth)
                             {
-                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
+                                float multiplier = (float)k / 255;
+                                int brightness = 255 - (int)(255 * multiplier);
+                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
+                                firstIntersectDepth = k;
                             }
                         }
                     }
-                    if (bone == true)
+                    returnScanVolume.SetPixel(i, j, pixelColour);
+                }
+            }
+
+            return returnScanVolume;
+        }
+
+        public Bitmap FrontInGradient(short sliceNumber)
+        {
+            int w = CT_x_axis;
+            int h = CT_z_axis;
+            Bitmap returnScanVolume = new Bitmap(w, h);
+
+            for (int j = 0; j < h; j++)
+            {
+                for (int i = 0; i < w; i++)
+                {
+                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
+                    int firstIntersectDepth = 255;
+                    for (int k = sliceNumber; k < CT_y_axis; k++)
                     {
-                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
+                        double voxelVal = cthead[j, k, i];
+                        if (voxelVal > 400)
+                        {
+                            if (k < firstIntersectDepth)
+                            {
+                                float multiplier = (float)k / 255;
+                                int brightness = 255 - (int)(255 * multiplier);
+                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
+                                firstIntersectDepth = k;
+                            }
+                        }
                     }
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
@@ -501,23 +520,20 @@ namespace CWCTHead
                 for (int i = 0; i < w; i++)
                 {
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    bool bone = false;
                     int firstIntersectDepth = 255;
                     for (int k = sliceNumber; k < CT_x_axis; k++)
                     {
                         double voxelVal = cthead[j, i, k];
                         if (voxelVal > 400)
                         {
-                            bone = true;
                             if (k < firstIntersectDepth)
                             {
-                                firstIntersectDepth = Math.Max(2, k / boneBrightnessTrackbar.Value);
+                                float multiplier = (float)k / 255;
+                                int brightness = 255 - (int)(255 * multiplier);
+                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
+                                firstIntersectDepth = k;
                             }
                         }
-                    }
-                    if (bone == true)
-                    {
-                        pixelColour = Color.FromArgb(255, 255 / firstIntersectDepth, 255 / firstIntersectDepth, 255 / firstIntersectDepth);
                     }
                     returnScanVolume.SetPixel(i, j, pixelColour);
                 }
@@ -535,7 +551,6 @@ namespace CWCTHead
                 sideViewLabel.ForeColor = Color.White;
 
                 skinOpacityLabel.ForeColor = Color.White;
-                boneBrightnessLabel.ForeColor = Color.White;
             }
             else
             {
@@ -545,7 +560,6 @@ namespace CWCTHead
                 sideViewLabel.ForeColor = Color.Black;
 
                 skinOpacityLabel.ForeColor = Color.Black;
-                boneBrightnessLabel.ForeColor = Color.Black;
             }
         }
 
@@ -563,26 +577,18 @@ namespace CWCTHead
                 case "Default":
                     skinOpacityTrackbar.Visible = false;
                     skinOpacityLabel.Visible = false;
-                    boneBrightnessTrackbar.Visible = false;
-                    boneBrightnessLabel.Visible = false;
                     break;
                 case "Depth":
                     skinOpacityTrackbar.Visible = false;
                     skinOpacityLabel.Visible = false;
-                    boneBrightnessTrackbar.Visible = true;
-                    boneBrightnessLabel.Visible = true;
                     break;
                 case "Volume":
                     skinOpacityTrackbar.Visible = true;
                     skinOpacityLabel.Visible = true;
-                    boneBrightnessTrackbar.Visible = false;
-                    boneBrightnessLabel.Visible = false;
                     break;
                 default:
                     skinOpacityTrackbar.Visible = false;
                     skinOpacityLabel.Visible = false;
-                    boneBrightnessTrackbar.Visible = false;
-                    boneBrightnessLabel.Visible = false;
                     break;
 
             }
