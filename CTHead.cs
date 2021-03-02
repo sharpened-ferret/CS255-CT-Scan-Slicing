@@ -13,6 +13,13 @@ namespace CWCTHead
 {
     public partial class CTHead : Form
     {
+        enum View {
+            Side,
+            Front,
+            Top
+        }
+
+
         short[,,] cthead;
         public short min, max; //min/max value in the 3D volume data set
         int CT_x_axis;
@@ -115,7 +122,7 @@ namespace CWCTHead
                     topImage = TopDownSlice(sliceValue);
                     break;
                 case "Depth":
-                    topImage = TopDownDepth(sliceValue);
+                    topImage = Depth(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
                     break;
                 case "Volume":
                     topImage = TopDownVolume(sliceValue);
@@ -141,7 +148,7 @@ namespace CWCTHead
                     frontImage = FrontInSlice(sliceValue);
                     break;
                 case "Depth":
-                    frontImage = FrontInDepth(sliceValue);
+                    frontImage = Depth(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
                     break;
                 case "Volume":
                     frontImage = FrontInVolume(sliceValue);
@@ -170,7 +177,7 @@ namespace CWCTHead
                     sideImage = SideOnSlice(sliceValue);
                     break;
                 case "Depth":
-                    sideImage = SideOnDepth(sliceValue);
+                    sideImage = Depth(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
                     break;
                 case "Volume":
                     sideImage = SideOnVolume(sliceValue);
@@ -258,27 +265,40 @@ namespace CWCTHead
             return returnScanSlice;
         }
 
-        public Bitmap TopDownDepth(short sliceNumber)
+        private Bitmap Depth(short sliceNumber, int width, int height, int depth, View view)
         {
-            int w = CT_x_axis;
-            int h = CT_y_axis;
 
-            Bitmap returnScanVolume = new Bitmap(w, h);
+            Bitmap returnScanVolume = new Bitmap(width, height);
 
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < height; j++)
             {
-                for (int i = 0; i < w; i++)
+                for (int i = 0; i < width; i++)
                 {
                     Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    int firstIntersectDepth = 113;
-                    for (int k = sliceNumber; k < CT_z_axis; k++)
+                    int firstIntersectDepth = depth;
+                    for (int k = sliceNumber; k < depth; k++)
                     {
-                        double voxelVal = cthead[k, j, i];
+                        double voxelVal;
+                        switch (view)
+                        {
+                            case View.Top:
+                                voxelVal = cthead[k, j, i];
+                                break;
+                            case View.Side:
+                                voxelVal = cthead[j, i, k];
+                                break;
+                            case View.Front:
+                                voxelVal = cthead[j, k, i];
+                                break;
+                            default:
+                                voxelVal = cthead[k, j, i];
+                                break;
+                        }
                         if (voxelVal > 400)
                         {
                             if (k < firstIntersectDepth)
                             {
-                                float multiplier = (float)k / 113;
+                                float multiplier = (float)k / depth;
                                 int brightness = 255 - (int)(255 * multiplier);
                                 pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
                                 firstIntersectDepth = k;
@@ -346,39 +366,6 @@ namespace CWCTHead
             }
 
             return returnScanSlice;
-        }
-
-        public Bitmap FrontInDepth(short sliceNumber)
-        {
-            int w = CT_x_axis;
-            int h = CT_z_axis;
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    int firstIntersectDepth = 255;
-                    for (int k = sliceNumber; k < CT_y_axis; k++)
-                    {
-                        double voxelVal = cthead[j, k, i];
-                        if (voxelVal > 400)
-                        {
-                            if (k < firstIntersectDepth)
-                            {
-                                float multiplier = (float)k / 255;
-                                int brightness = 255 - (int)(255 * multiplier);
-                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
-                                firstIntersectDepth = k;
-                            }
-                        }
-                    }
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
-            }
-
-            return returnScanVolume;
         }
 
         public Bitmap FrontInGradient(short sliceNumber)
@@ -506,39 +493,6 @@ namespace CWCTHead
             }
 
             return returnScanSlice;
-        }
-
-        public Bitmap SideOnDepth(short sliceNumber)
-        {
-            int w = CT_y_axis;
-            int h = CT_z_axis;
-
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    int firstIntersectDepth = 255;
-                    for (int k = sliceNumber; k < CT_x_axis; k++)
-                    {
-                        double voxelVal = cthead[j, i, k];
-                        if (voxelVal > 400)
-                        {
-                            if (k < firstIntersectDepth)
-                            {
-                                float multiplier = (float)k / 255;
-                                int brightness = 255 - (int)(255 * multiplier);
-                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
-                                firstIntersectDepth = k;
-                            }
-                        }
-                    }
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
-            }
-            return returnScanVolume;
         }
 
         private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
