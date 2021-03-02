@@ -119,16 +119,16 @@ namespace CWCTHead
             switch (renderMode)
             {
                 case "Default":
-                    topImage = TopDownSlice(sliceValue);
+                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
                     break;
                 case "Depth":
                     topImage = Depth(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
                     break;
                 case "Volume":
-                    topImage = TopDownVolume(sliceValue);
+                    topImage = Volume(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
                     break;
                 default:
-                    topImage = TopDownSlice(sliceValue);
+                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
                     break;
 
             }
@@ -145,19 +145,19 @@ namespace CWCTHead
             switch (renderMode)
             {
                 case "Default":
-                    frontImage = FrontInSlice(sliceValue);
+                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
                     break;
                 case "Depth":
                     frontImage = Depth(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
                     break;
                 case "Volume":
-                    frontImage = FrontInVolume(sliceValue);
+                    frontImage = Volume(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
                     break;
                 case "Gradient":
                     frontImage = FrontInGradient(sliceValue);
                     break;
                 default:
-                    frontImage = FrontInSlice(sliceValue);
+                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
                     break;
 
             }
@@ -174,16 +174,16 @@ namespace CWCTHead
             switch (renderMode)
             {
                 case "Default":
-                    sideImage = SideOnSlice(sliceValue);
+                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
                     break;
                 case "Depth":
                     sideImage = Depth(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
                     break;
                 case "Volume":
-                    sideImage = SideOnVolume(sliceValue);
+                    sideImage = Volume(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
                     break;
                 default:
-                    sideImage = SideOnSlice(sliceValue);
+                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
                     break;
 
             }
@@ -244,19 +244,30 @@ namespace CWCTHead
             Console.WriteLine("Minimum CT Value: " + min + ", Maximum CT Value: " + max);
         }
 
-        public Bitmap TopDownSlice(short sliceNumber)
+        private Bitmap Slice(short sliceNumber, int width, int height, View view)
         {
-            int w = CT_x_axis;
-            int h = CT_y_axis;
-
             double datum;
-            Bitmap returnScanSlice = new Bitmap(w, h);
+            Bitmap returnScanSlice = new Bitmap(width, height);
 
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < height; j++)
             {
-                for (int i = 0; i < w; i++)
+                for (int i = 0; i < width; i++)
                 {
-                    datum = cthead[sliceNumber, j, i];
+                    switch (view)
+                    {
+                        case View.Top:
+                            datum = cthead[sliceNumber, j, i];
+                            break;
+                        case View.Side:
+                            datum = cthead[j, i, sliceNumber];
+                            break;
+                        case View.Front:
+                            datum = cthead[j, sliceNumber, i];
+                            break;
+                        default:
+                            datum = cthead[0, 0, 0];
+                            break;
+                    }
                     Color currentCol = getColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
@@ -267,7 +278,6 @@ namespace CWCTHead
 
         private Bitmap Depth(short sliceNumber, int width, int height, int depth, View view)
         {
-
             Bitmap returnScanVolume = new Bitmap(width, height);
 
             for (int j = 0; j < height; j++)
@@ -291,7 +301,7 @@ namespace CWCTHead
                                 voxelVal = cthead[j, k, i];
                                 break;
                             default:
-                                voxelVal = cthead[k, j, i];
+                                voxelVal = cthead[0, 0, 0];
                                 break;
                         }
                         if (voxelVal > 400)
@@ -311,31 +321,43 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
-        public Bitmap TopDownVolume(short sliceNumber)
+        private Bitmap Volume(short sliceNumber, int width, int height, int depth, View view)
         {
-            int w = CT_x_axis;
-            int h = CT_y_axis;
+            Bitmap returnScanVolume = new Bitmap(width, height);
 
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
+            for (int j = 0; j < height; j++)
             {
-                for (int i = 0; i < w; i++)
+                for (int i = 0; i < width; i++)
                 {
                     double transparency = 1.0;
+                    double voxelVal;
                     Color pixelColour = Color.FromArgb(0, 0, 0, 0);
                     double lighting = 1.0;
-                    for (int k = sliceNumber; k < CT_z_axis; k++)
+                    for (int k = sliceNumber; k < depth; k++)
                     {
                         if (transparency > 0)
                         {
-                            double voxelVal = cthead[k, j, i];
+                            switch (view)
+                            {
+                                case View.Top:
+                                    voxelVal = cthead[k, j, i];
+                                    break;
+                                case View.Side:
+                                    voxelVal = cthead[j, i, k];
+                                    break;
+                                case View.Front:
+                                    voxelVal = cthead[j, k, i];
+                                    break;
+                                default:
+                                    voxelVal = cthead[0, 0, 0];
+                                    break;
+                            }
                             Color voxelColour = getColour(voxelVal, true);
                             int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
                             int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
                             int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
 
-                            double transparencyOffset = (double) voxelColour.A / 255;
+                            double transparencyOffset = (double)voxelColour.A / 255;
                             transparency = transparency * (1.0f - transparencyOffset);
 
                             pixelColour = Color.FromArgb(255, newR, newG, newB);
@@ -345,27 +367,6 @@ namespace CWCTHead
                 }
             }
             return returnScanVolume;
-        }
-        
-        public Bitmap FrontInSlice(short sliceNumber)
-        {
-            int w = CT_x_axis;
-            int h = CT_z_axis;
-
-            double datum;
-            Bitmap returnScanSlice = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    datum = cthead[j, sliceNumber, i];
-                    Color currentCol = getColour(datum, false);
-                    returnScanSlice.SetPixel(i, j, currentCol);
-                }
-            }
-
-            return returnScanSlice;
         }
 
         public Bitmap FrontInGradient(short sliceNumber)
@@ -399,100 +400,6 @@ namespace CWCTHead
             }
 
             return returnScanVolume;
-        }
-
-        public Bitmap FrontInVolume(short sliceNumber)
-        {
-            int w = CT_x_axis;
-            int h = CT_z_axis;
-
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    double transparency = 1.0;
-                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
-                    double lighting = 1.0;
-                    for (int k = sliceNumber; k < CT_y_axis; k++)
-                    {
-                        if (transparency > 0)
-                        {
-                            double voxelVal = cthead[j, k, i];
-                            Color voxelColour = getColour(voxelVal, true);
-                            int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
-                            int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
-                            int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
-
-                            double transparencyOffset = (double)voxelColour.A / 255;
-                            transparency = transparency * (1.0f - transparencyOffset);
-
-                            pixelColour = Color.FromArgb(255, newR, newG, newB);
-                        }
-                    }
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
-            }
-            return returnScanVolume;
-        }
-
-        public Bitmap SideOnVolume(short sliceNumber)
-        {
-            int w = CT_y_axis;
-            int h = CT_z_axis;
-
-            Bitmap returnScanVolume = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    double transparency = 1.0;
-                    Color pixelColour = Color.FromArgb(0, 0, 0, 0);
-                    double lighting = 1.0;
-                    for (int k = sliceNumber; k < CT_x_axis; k++)
-                    {
-                        if (transparency > 0)
-                        {
-                            double voxelVal = cthead[j, i, k];
-                            Color voxelColour = getColour(voxelVal, true);
-                            int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
-                            int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
-                            int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
-
-                            double transparencyOffset = (double)voxelColour.A / 255;
-                            transparency *= (1.0f - transparencyOffset);
-
-                            pixelColour = Color.FromArgb(255, newR, newG, newB);
-                        }
-                    }
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
-            }
-
-            return returnScanVolume;
-        }
-
-        public Bitmap SideOnSlice(short sliceNumber)
-        {
-            int w = CT_y_axis;
-            int h = CT_z_axis;
-
-            double datum;
-            Bitmap returnScanSlice = new Bitmap(w, h);
-
-            for (int j = 0; j < h; j++)
-            {
-                for (int i = 0; i < w; i++)
-                {
-                    datum = cthead[j, i, sliceNumber];
-                    Color currentCol = getColour(datum, false);
-                    returnScanSlice.SetPixel(i, j, currentCol);
-                }
-            }
-
-            return returnScanSlice;
         }
 
         private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
