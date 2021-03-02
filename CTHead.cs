@@ -14,7 +14,7 @@ namespace CWCTHead
     public partial class CTHead : Form
     {
         //Enumerates values for view direction
-        enum View {
+        private enum View {
             Side,
             Front,
             Top
