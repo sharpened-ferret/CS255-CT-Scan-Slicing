@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Windows.Media.Media3D;
 
 namespace CWCTHead
 {
     public partial class CTHead : Form
     {
-        //Enumerates values for view direction
+        //Enumerates values for possible view directions
         private enum View {
             Side,
             Front,
@@ -23,19 +24,25 @@ namespace CWCTHead
 
         short[,,] cthead;
 
-        public short min, max; //min/max value in the 3D volume data set
+        private short min, max; //store the min and max CT values in the data set
 
         //Store the directional sizes of the data set
-        int CT_x_axis;
-        int CT_y_axis;
-        int CT_z_axis;
+        private int CT_x_axis;
+        private int CT_y_axis;
+        private int CT_z_axis;
 
-        public int skin_opacity; //stores the skin weighting for volume rendering
+        private int skin_opacity; //stores the skin weighting for volume rendering
 
-        Bitmap topImage;
-        Bitmap frontImage;
-        Bitmap sideImage;
+        private Bitmap topImage;
+        private Bitmap frontImage;
+        private Bitmap sideImage;
 
+
+
+
+        /*
+         * ---Core Methods---
+        */ 
         //Creates a new CTHead object
         public CTHead(String filename, int x, int y, int z)
         {
@@ -69,132 +76,6 @@ namespace CWCTHead
             }
         }
 
-        //Updates top image and trackbar value label
-        private void topSliceTrackbar_ValueChanged(object sender, EventArgs e)
-        {
-            updateTopView();
-            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
-        }
-
-        //Updates front image and trackbar value label
-        private void frontSliceTrackbar_ValueChanged(object sender, EventArgs e)
-        {
-            updateFrontView();
-            frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
-        }
-
-        //Updates side image and trackbar value label
-        private void sideSliceTrackbar_ValueChanged(object sender, EventArgs e)
-        {
-            updateSideView();
-
-            sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        //Updates top image
-        private void topSliceButton_Click(object sender, EventArgs e)
-        {
-            updateTopView();
-        }
-
-        //Updates front image
-        private void frontSliceButton_Click(object sender, EventArgs e)
-        {
-            updateFrontView();
-        }
-
-        //Updates side image
-        private void sideSliceButton_Click(object sender, EventArgs e)
-        {
-            updateSideView();
-        }
-
-        //Renders top image based on current render settings
-        private void updateTopView()
-        {
-            short sliceValue = (short) topSliceTrackbar.Value;
-
-            string renderMode = renderModeBox.Text;
-            switch (renderMode)
-            {
-                case "Default":
-                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
-                    break;
-                case "Depth":
-                    topImage = Depth(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
-                    break;
-                case "Volume":
-                    topImage = Volume(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
-                    break;
-                default:
-                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
-                    break;
-
-            }
-            topView.Image = topImage;
-            topView.SizeMode = PictureBoxSizeMode.Zoom;
-        }
-
-        //Renders front image based on current render settings
-        private void updateFrontView()
-        {
-            short sliceValue = (short)frontSliceTrackbar.Value;
-
-            string renderMode = renderModeBox.Text;
-            switch (renderMode)
-            {
-                case "Default":
-                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
-                    break;
-                case "Depth":
-                    frontImage = Depth(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
-                    break;
-                case "Volume":
-                    frontImage = Volume(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
-                    break;
-                case "Gradient":
-                    frontImage = Gradient(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
-                    break;
-                default:
-                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
-                    break;
-
-            }
-
-            frontView.Image = frontImage;
-            frontView.SizeMode = PictureBoxSizeMode.Zoom;
-        }
-
-        //Renders side image based on current render settings
-        private void updateSideView()
-        {
-            short sliceValue = (short) sideSliceTrackbar.Value;
-            string renderMode = renderModeBox.Text;
-            switch (renderMode)
-            {
-                case "Default":
-                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
-                    break;
-                case "Depth":
-                    sideImage = Depth(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
-                    break;
-                case "Volume":
-                    sideImage = Volume(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
-                    break;
-                default:
-                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
-                    break;
-
-            }
-            sideView.Image = sideImage;
-            sideView.SizeMode = PictureBoxSizeMode.Zoom;
-        }
-
         //Reads data from a CT data file
         private void ReadData(String filename)
         {
@@ -210,30 +91,11 @@ namespace CWCTHead
 
             cthead = new short[CT_z_axis, CT_y_axis, CT_x_axis];
 
-            FileInfo fi = new FileInfo("CThead");
-
-            if (fi.Exists)
+            for (k = 0; k < CT_z_axis; k++)
             {
-                // Get file size  
-                long size = fi.Length;
-                Console.WriteLine("File Size in Bytes: {0}", size);
-                // File ReadOnly ?  
-                bool IsReadOnly = fi.IsReadOnly;
-                Console.WriteLine("Is ReadOnly: {0}", IsReadOnly);
-                // Creation, last access, and last write time   
-                DateTime creationTime = fi.CreationTime;
-                Console.WriteLine("Creation time: {0}", creationTime);
-                DateTime accessTime = fi.LastAccessTime;
-                Console.WriteLine("Last access time: {0}", accessTime);
-                DateTime updatedTime = fi.LastWriteTime;
-                Console.WriteLine("Last write time: {0}", updatedTime);
-            }
-
-            for (k=0; k < CT_z_axis; k++)
-            {
-                for (j=0; j < CT_y_axis; j++)
+                for (j = 0; j < CT_y_axis; j++)
                 {
-                    for (i=0; i < CT_x_axis; i++)
+                    for (i = 0; i < CT_x_axis; i++)
                     {
                         //Reads voxel data and reverses endianness
                         b1 = ((int)reader.ReadByte()) & 0xff;
@@ -246,6 +108,39 @@ namespace CWCTHead
                 }
             }
             Console.WriteLine("Minimum CT Value: " + min + ", Maximum CT Value: " + max);
+        }
+
+        //Calculates colour values based on the transfer functions
+        private Color GetColour(double datum, bool volumeRender)
+        {
+            if (volumeRender)
+            {
+                if (datum < -300)
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+                if (datum >= -300 && datum < 50)
+                {
+                    return Color.FromArgb(skin_opacity, 255, 201, 153);
+                }
+                if (datum < 300 && datum >= 50)
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+                if (datum >= 300 && datum <= 4096)
+                {
+                    return Color.FromArgb((int)(1.0 * 255), 255, 255, 255);
+                }
+                else
+                {
+                    return Color.FromArgb(0, 0, 0, 0);
+                }
+            }
+            else
+            {
+                int col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
+                return Color.FromArgb(255, col, col, col);
+            }
         }
 
         //Calculates a single-layer slice through the data set
@@ -273,7 +168,7 @@ namespace CWCTHead
                             datum = cthead[0, 0, 0];
                             break;
                     }
-                    Color currentCol = getColour(datum, false);
+                    Color currentCol = GetColour(datum, false);
                     returnScanSlice.SetPixel(i, j, currentCol);
                 }
             }
@@ -359,7 +254,7 @@ namespace CWCTHead
                                     voxelVal = cthead[0, 0, 0];
                                     break;
                             }
-                            Color voxelColour = getColour(voxelVal, true);
+                            Color voxelColour = GetColour(voxelVal, true);
                             int newR = Math.Min(255, (int)(pixelColour.R + ((transparency * voxelColour.A * lighting * voxelColour.R) / 255)));
                             int newG = Math.Min(255, (int)(pixelColour.G + ((transparency * voxelColour.A * lighting * voxelColour.G) / 255)));
                             int newB = Math.Min(255, (int)(pixelColour.B + ((transparency * voxelColour.A * lighting * voxelColour.B) / 255)));
@@ -376,54 +271,147 @@ namespace CWCTHead
             return returnScanVolume;
         }
 
-        //Calculates a gradient view through the data set
-        private Bitmap Gradient(short sliceNumber, int width, int height, int depth, View view)
-        {
-            Bitmap returnScanVolume = new Bitmap(width, height);
 
-            for (int j = 0; j < height; j++)
+        /*
+         * ---Update Helpers---
+        */
+        //Renders top image based on current render settings
+        private void UpdateTopView()
+        {
+            short sliceValue = (short)topSliceTrackbar.Value;
+
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
             {
-                for (int i = 0; i < width; i++)
-                {
-                    Color pixelColour = Color.FromArgb(255, 0, 0, 0);
-                    int firstIntersectDepth = depth;
-                    for (int k = sliceNumber; k < depth; k++)
-                    {
-                        double voxelVal;
-                        switch (view)
-                        {
-                            case View.Top:
-                                voxelVal = cthead[k, j, i];
-                                break;
-                            case View.Side:
-                                voxelVal = cthead[j, i, k];
-                                break;
-                            case View.Front:
-                                voxelVal = cthead[j, k, i];
-                                break;
-                            default:
-                                voxelVal = cthead[0, 0, 0];
-                                break;
-                        }
-                        if (voxelVal > 400)
-                        {
-                            if (k < firstIntersectDepth)
-                            {
-                                float multiplier = (float)k / depth;
-                                int brightness = 255 - (int)(255 * multiplier);
-                                pixelColour = Color.FromArgb(255, brightness, brightness, brightness);
-                                firstIntersectDepth = k;
-                            }
-                        }
-                    }
-                    returnScanVolume.SetPixel(i, j, pixelColour);
-                }
+                case "Default":
+                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
+                    break;
+                case "Depth":
+                    topImage = Depth(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
+                    break;
+                case "Volume":
+                    topImage = Volume(sliceValue, CT_x_axis, CT_y_axis, CT_z_axis, View.Top);
+                    break;
+                default:
+                    topImage = Slice(sliceValue, CT_x_axis, CT_y_axis, View.Top);
+                    break;
+
             }
-            return returnScanVolume;
+            topView.Image = topImage;
+            topView.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
+        //Renders front image based on current render settings
+        private void UpdateFrontView()
+        {
+            short sliceValue = (short)frontSliceTrackbar.Value;
+
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
+            {
+                case "Default":
+                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
+                    break;
+                case "Depth":
+                    frontImage = Depth(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
+                    break;
+                case "Volume":
+                    frontImage = Volume(sliceValue, CT_x_axis, CT_z_axis, CT_y_axis, View.Front);
+                    break;
+                default:
+                    frontImage = Slice(sliceValue, CT_x_axis, CT_z_axis, View.Front);
+                    break;
+
+            }
+
+            frontView.Image = frontImage;
+            frontView.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        //Renders side image based on current render settings
+        private void UpdateSideView()
+        {
+            short sliceValue = (short)sideSliceTrackbar.Value;
+            string renderMode = renderModeBox.Text;
+            switch (renderMode)
+            {
+                case "Default":
+                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
+                    break;
+                case "Depth":
+                    sideImage = Depth(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
+                    break;
+                case "Volume":
+                    sideImage = Volume(sliceValue, CT_y_axis, CT_z_axis, CT_x_axis, View.Side);
+                    break;
+                default:
+                    sideImage = Slice(sliceValue, CT_y_axis, CT_z_axis, View.Side);
+                    break;
+
+            }
+            sideView.Image = sideImage;
+            sideView.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+
+        /* 
+         * ---Button Handlers---
+        */
+        //Updates top image
+        private void TopSliceButton_Click(object sender, EventArgs e)
+        {
+            UpdateTopView();
+        }
+
+        //Updates front image
+        private void FrontSliceButton_Click(object sender, EventArgs e)
+        {
+            UpdateFrontView();
+        }
+
+        //Updates side image
+        private void SideSliceButton_Click(object sender, EventArgs e)
+        {
+            UpdateSideView();
+        }
+
+
+        /*
+         * ---Trackbar Handlers---
+        */ 
+        //Controls the slice position in the front viewport
+        private void FrontSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateFrontView();
+            frontViewLabel.Text = "Current Slice: " + frontSliceTrackbar.Value;
+        }
+
+        //Controls the slice position in the side viewport
+        private void SideSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateSideView();
+
+            sideViewLabel.Text = "Current Slice: " + sideSliceTrackbar.Value;
+        }
+
+        //Controls the slice position in the top viewport
+        private void TopSliceTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateTopView();
+            topViewLabel.Text = "Current Slice: " + topSliceTrackbar.Value;
+        }
+
+        //Controls the skin opacity (only visible in volume render mode)
+        private void SkinOpacityTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            skin_opacity = (int)(skinOpacityTrackbar.Value * 255) / 100;
+            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
+        }
+
+
+
         //Updates UI elements when dark mode is toggled
-        private void darkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        private void DarkModeToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (darkModeToolStripMenuItem.Checked)
             {
@@ -445,15 +433,9 @@ namespace CWCTHead
             }
         }
 
-        //Controls the skin opacity (only visible in volume render mode)
-        private void skinOpacityTrackbar_ValueChanged(object sender, EventArgs e)
-        {
-            skin_opacity = (int) (skinOpacityTrackbar.Value * 255) / 100;
-            skinOpacityLabel.Text = "Skin Opacity: " + skinOpacityTrackbar.Value + "%\n(Requires Re-Render)";
-        }
 
         //Updates the UI elements when a new render mode is selected
-        private void renderModeBox_DropDownClosed(object sender, EventArgs e)
+        private void RenderModeBox_DropDownClosed(object sender, EventArgs e)
         {
             string renderMode = renderModeBox.Text;
             switch (renderMode)
@@ -475,39 +457,6 @@ namespace CWCTHead
                     skinOpacityLabel.Visible = false;
                     break;
 
-            }
-        }
-
-        //Calculates colour values based on the transfer functions
-        private Color getColour(double datum, bool volumeRender)
-        {
-            if (volumeRender)
-            {
-                if (datum < -300)
-                {
-                    return Color.FromArgb(0, 0, 0, 0);
-                }
-                if (datum >= -300 && datum < 50)
-                {
-                    return Color.FromArgb(skin_opacity, 255, 201, 153);
-                }
-                if (datum < 300 && datum >= 50)
-                {
-                    return Color.FromArgb(0, 0, 0, 0);
-                }
-                if (datum >= 300 && datum <= 4096)
-                {
-                    return Color.FromArgb((int)(1.0 * 255), 255, 255, 255);
-                }
-                else
-                {
-                    return Color.FromArgb(0, 0, 0, 0);
-                }
-            }
-            else
-            {
-                int col = (int)(((float)(datum - min) / ((float)(max - min))) * 255);
-                return Color.FromArgb(255, col, col, col);
             }
         }
     }

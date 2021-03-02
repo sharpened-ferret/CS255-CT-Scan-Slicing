@@ -67,7 +67,7 @@ namespace CWCTHead
             this.topSliceTrackbar.Name = "topSliceTrackbar";
             this.topSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.topSliceTrackbar.TabIndex = 0;
-            this.topSliceTrackbar.ValueChanged += new System.EventHandler(this.topSliceTrackbar_ValueChanged);
+            this.topSliceTrackbar.ValueChanged += new System.EventHandler(this.TopSliceTrackbar_ValueChanged);
             // 
             // frontSliceTrackbar
             // 
@@ -75,7 +75,7 @@ namespace CWCTHead
             this.frontSliceTrackbar.Name = "frontSliceTrackbar";
             this.frontSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.frontSliceTrackbar.TabIndex = 1;
-            this.frontSliceTrackbar.ValueChanged += new System.EventHandler(this.frontSliceTrackbar_ValueChanged);
+            this.frontSliceTrackbar.ValueChanged += new System.EventHandler(this.FrontSliceTrackbar_ValueChanged);
             // 
             // sideSliceTrackbar
             // 
@@ -83,7 +83,7 @@ namespace CWCTHead
             this.sideSliceTrackbar.Name = "sideSliceTrackbar";
             this.sideSliceTrackbar.Size = new System.Drawing.Size(104, 45);
             this.sideSliceTrackbar.TabIndex = 2;
-            this.sideSliceTrackbar.ValueChanged += new System.EventHandler(this.sideSliceTrackbar_ValueChanged);
+            this.sideSliceTrackbar.ValueChanged += new System.EventHandler(this.SideSliceTrackbar_ValueChanged);
             // 
             // menuStrip1
             // 
@@ -111,7 +111,7 @@ namespace CWCTHead
             this.darkModeToolStripMenuItem.Name = "darkModeToolStripMenuItem";
             this.darkModeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.darkModeToolStripMenuItem.Text = "Dark Mode";
-            this.darkModeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.darkModeToolStripMenuItem_CheckStateChanged);
+            this.darkModeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.DarkModeToolStripMenuItem_CheckStateChanged);
             // 
             // renderModeMenuItem
             // 
@@ -127,11 +127,10 @@ namespace CWCTHead
             this.renderModeBox.Items.AddRange(new object[] {
             "Default",
             "Depth",
-            "Volume",
-            "Gradient"});
+            "Volume"});
             this.renderModeBox.Name = "renderModeBox";
             this.renderModeBox.Size = new System.Drawing.Size(121, 23);
-            this.renderModeBox.DropDownClosed += new System.EventHandler(this.renderModeBox_DropDownClosed);
+            this.renderModeBox.DropDownClosed += new System.EventHandler(this.RenderModeBox_DropDownClosed);
             // 
             // topSliceButton
             // 
@@ -141,7 +140,7 @@ namespace CWCTHead
             this.topSliceButton.TabIndex = 4;
             this.topSliceButton.Text = "Slice";
             this.topSliceButton.UseVisualStyleBackColor = true;
-            this.topSliceButton.Click += new System.EventHandler(this.topSliceButton_Click);
+            this.topSliceButton.Click += new System.EventHandler(this.TopSliceButton_Click);
             // 
             // topView
             // 
@@ -178,7 +177,7 @@ namespace CWCTHead
             this.frontSliceButton.TabIndex = 8;
             this.frontSliceButton.Text = "Slice";
             this.frontSliceButton.UseVisualStyleBackColor = true;
-            this.frontSliceButton.Click += new System.EventHandler(this.frontSliceButton_Click);
+            this.frontSliceButton.Click += new System.EventHandler(this.FrontSliceButton_Click);
             // 
             // sideSliceButton
             // 
@@ -188,7 +187,7 @@ namespace CWCTHead
             this.sideSliceButton.TabIndex = 9;
             this.sideSliceButton.Text = "Slice";
             this.sideSliceButton.UseVisualStyleBackColor = true;
-            this.sideSliceButton.Click += new System.EventHandler(this.sideSliceButton_Click);
+            this.sideSliceButton.Click += new System.EventHandler(this.SideSliceButton_Click);
             // 
             // topViewLabel
             // 
@@ -260,7 +259,7 @@ namespace CWCTHead
             this.skinOpacityTrackbar.TabIndex = 14;
             this.skinOpacityTrackbar.Value = 12;
             this.skinOpacityTrackbar.Visible = false;
-            this.skinOpacityTrackbar.ValueChanged += new System.EventHandler(this.skinOpacityTrackbar_ValueChanged);
+            this.skinOpacityTrackbar.ValueChanged += new System.EventHandler(this.SkinOpacityTrackbar_ValueChanged);
             // 
             // CTHead
             // 
